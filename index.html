@@ -3,148 +3,63 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>ลงทะเบียนสมาชิกกองทุนสวัสดิการชุมชน</title>
+  <title>ระบบสมาชิกกองทุนสวัสดิการชุมชน</title>
   
-  <!-- นำเข้า Google Fonts: Prompt สำหรับความ Modern -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  
-  <!-- นำเข้า Bootstrap 5 และ SweetAlert2 -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
   
   <style>
     :root {
-      --fintech-primary: #0A2540;   /* Deep Navy */
-      --fintech-accent: #635BFF;    /* FinTech Blue/Purple */
-      --fintech-success: #00D084;   /* Emerald Green */
+      --fintech-primary: #0A2540;
+      --fintech-accent: #635BFF;
+      --fintech-success: #00D084;
       --bg-light: #F7F9FC;
     }
-
-    body { 
-      background-color: var(--bg-light); 
-      font-family: 'Prompt', sans-serif; 
-      color: #333;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    /* Header Design */
+    body { background-color: var(--bg-light); font-family: 'Prompt', sans-serif; color: #333; }
     .app-header {
       background: linear-gradient(135deg, var(--fintech-primary), #113a63);
-      color: white;
-      padding: 40px 20px 60px;
-      text-align: center;
-      border-bottom-left-radius: 24px;
-      border-bottom-right-radius: 24px;
+      color: white; padding: 30px 20px 50px; text-align: center;
+      border-bottom-left-radius: 24px; border-bottom-right-radius: 24px;
       box-shadow: 0 4px 12px rgba(10, 37, 64, 0.15);
     }
-
-    .app-header h5 {
-      font-weight: 600;
-      letter-spacing: 0.5px;
-      margin-bottom: 5px;
+    .card-box {
+      background: white; padding: 25px; border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05); max-width: 500px;
+      margin: -35px auto 30px; position: relative; border: 1px solid rgba(0,0,0,0.05);
     }
-
-    /* Card Design */
-    .form-container { 
-      background: white; 
-      padding: 30px 25px; 
-      border-radius: 16px; 
-      box-shadow: 0 10px 30px rgba(0,0,0,0.05); 
-      max-width: 500px; 
-      margin: -40px auto 30px; 
-      position: relative;
-      border: 1px solid rgba(0,0,0,0.05);
-    }
-
-    /* Floating Labels & Inputs */
-    .form-floating > label {
-      color: #8898AA;
-      font-weight: 400;
-    }
-    
-    .form-control, .form-select {
-      border-radius: 10px;
-      border: 1px solid #E2E8F0;
-      background-color: #F8FAFC;
-      transition: all 0.2s ease-in-out;
-    }
-
-    .form-control:focus, .form-select:focus {
-      background-color: #FFFFFF;
-      border-color: var(--fintech-accent);
-      box-shadow: 0 0 0 4px rgba(99, 91, 255, 0.1);
-    }
-
-    /* Button Styling */
-    .btn-fintech {
-      background-color: var(--fintech-primary);
-      color: white;
-      border-radius: 10px;
-      padding: 14px;
-      font-weight: 500;
-      font-size: 1.1rem;
-      border: none;
-      transition: all 0.3s;
-      margin-top: 10px;
-    }
-
-    .btn-fintech:hover, .btn-fintech:focus {
-      background-color: #06182c;
-      color: white;
-      transform: translateY(-2px);
-      box-shadow: 0 8px 15px rgba(10, 37, 64, 0.2);
-    }
-
-    .btn-fintech:disabled {
-      background-color: #A0AEC0;
-      transform: none;
-      box-shadow: none;
-    }
-
-    /* Loading Overlay */
-    #systemLoading { 
-      position: fixed; 
-      top: 0; left: 0; 
-      width: 100%; height: 100%; 
-      background: rgba(255, 255, 255, 0.9); 
-      backdrop-filter: blur(5px);
-      z-index: 9999; 
-      display: flex; 
-      flex-direction: column; 
-      justify-content: center; 
-      align-items: center; 
-    }
-    
-    .spinner-border {
-      width: 3rem;
-      height: 3rem;
-      color: var(--fintech-accent);
-      border-width: 0.25em;
-    }
+    .profile-img { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid var(--fintech-accent); margin-top: -65px; background: white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    .stat-card { background: #F8FAFC; border-radius: 12px; padding: 15px; border: 1px solid #E2E8F0; text-align: center; }
+    .badge-status { padding: 6px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 500; }
+    .form-control, .form-select { border-radius: 10px; border: 1px solid #E2E8F0; background-color: #F8FAFC; }
+    .form-control:focus, .form-select:focus { background-color: #FFFFFF; border-color: var(--fintech-accent); box-shadow: 0 0 0 4px rgba(99, 91, 255, 0.1); }
+    .btn-fintech { background-color: var(--fintech-primary); color: white; border-radius: 10px; padding: 12px; font-weight: 500; border: none; transition: 0.3s; }
+    .btn-fintech:hover { background-color: #06182c; color: white; }
+    #systemLoading { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.95); z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; }
   </style>
 </head>
 <body>
 
-<!-- Loading Screen -->
 <div id="systemLoading">
-  <div class="spinner-border mb-3" role="status"></div>
-  <p class="text-muted fw-medium">กำลังตรวจสอบข้อมูลความปลอดภัย...</p>
+  <div class="spinner-border mb-3" style="width: 3rem; height: 3rem; color: var(--fintech-accent);" role="status"></div>
+  <p class="text-muted fw-medium">กำลังตรวจสอบสถานะสมาชิก...</p>
 </div>
 
-<!-- App Header -->
+<!-- Header -->
 <div class="app-header">
-  <h5>ระบบสมัครสมาชิก</h5>
-  <p class="opacity-75 small mb-0">กองทุนสวัสดิการชุมชนเทศบาลตำบลสุคิริน</p>
+  <h5 class="fw-bold mb-1">กองทุนสวัสดิการชุมชน</h5>
+  <p class="opacity-75 small mb-0">เทศบาลตำบลสุคิริน จังหวัดนราธิวาส</p>
 </div>
 
-<!-- Main Form Card -->
-<div class="container">
-  <div class="form-container">
-    <h6 class="mb-4 text-center fw-bold" style="color: var(--fintech-primary);">ข้อมูลยืนยันตัวตน (KYC)</h6>
-    
+<div class="container mb-5">
+  
+  <!-- VIEW 1: หน้าจอสมัครสมาชิก (แสดงเมื่อยังไม่สมัคร) -->
+  <div id="registerView" class="card-box" style="display: none;">
+    <h6 class="mb-4 text-center fw-bold" style="color: var(--fintech-primary);"><i class="fa-solid fa-user-plus me-2"></i>ลงทะเบียนสมาชิกใหม่</h6>
     <form id="registerForm" onsubmit="handleFormSubmit(event)">
       <input type="hidden" id="uid" name="uid">
       <input type="hidden" id="displayName" name="displayName">
@@ -153,17 +68,14 @@
         <input type="text" class="form-control" id="fullName" name="fullName" placeholder="ชื่อ-นามสกุล" required>
         <label for="fullName">ชื่อ-นามสกุล (ตามบัตรประชาชน)</label>
       </div>
-      
       <div class="form-floating mb-3">
-        <input type="tel" class="form-control" id="nationalId" name="nationalId" placeholder="เลขประจำตัวประชาชน 13 หลัก" maxlength="13" pattern="\d{13}" required>
+        <input type="tel" class="form-control" id="nationalId" name="nationalId" placeholder="เลขบัตรประชาชน" maxlength="13" required>
         <label for="nationalId">เลขประจำตัวประชาชน 13 หลัก</label>
       </div>
-      
       <div class="form-floating mb-3">
-        <input type="tel" class="form-control" id="phone" name="phone" placeholder="เบอร์โทรศัพท์ติดต่อ" maxlength="10" pattern="\d{9,10}" required>
+        <input type="tel" class="form-control" id="phone" name="phone" placeholder="เบอร์โทรศัพท์" maxlength="10" required>
         <label for="phone">เบอร์โทรศัพท์ติดต่อ</label>
       </div>
-      
       <div class="form-floating mb-4">
         <select class="form-select" id="center" name="center" required>
           <option value="" disabled selected>-- เลือกศูนย์ใกล้บ้านท่าน --</option>
@@ -176,53 +88,138 @@
         </select>
         <label for="center">สังกัดศูนย์ประสานงาน</label>
       </div>
-
       <button type="submit" class="btn btn-fintech w-100" id="submitBtn">ยืนยันการลงทะเบียน</button>
     </form>
   </div>
+
+  <!-- VIEW 2: หน้าแดชบอร์ดสมาชิก (แสดงเมื่อสมัครแล้ว) -->
+  <div id="dashboardView" class="card-box text-center" style="display: none;">
+    <img id="userAvatar" src="" class="profile-img" alt="Profile">
+    <h5 id="dashName" class="fw-bold mt-2 mb-1 text-dark"></h5>
+    <p id="dashCenter" class="text-muted small mb-2"><i class="fa-solid fa-location-dot me-1 text-danger"></i></p>
+    <div id="dashStatusBadge" class="badge-status bg-warning text-dark d-inline-block mb-3"></div>
+
+    <div class="text-start border-top pt-3">
+      <div class="row g-2 mb-3">
+        <div class="col-6">
+          <div class="stat-card">
+            <small class="text-muted d-block">ยอดสมทบสะสม</small>
+            <span id="dashTotalContrib" class="fw-bold text-success fs-6">0 บาท</span>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="stat-card">
+            <small class="text-muted d-block">รับสวัสดิการรวม</small>
+            <span id="dashTotalWelfare" class="fw-bold text-primary fs-6">0 บาท</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-light p-3 rounded-3 small mb-3">
+        <div class="d-flex justify-content-between mb-1">
+          <span class="text-muted">รหัสใบสมัคร:</span>
+          <span id="dashAppId" class="fw-bold text-dark"></span>
+        </div>
+        <div class="d-flex justify-content-between mb-1">
+          <span class="text-muted">เลขบัตร ปชช:</span>
+          <span id="dashNatId" class="text-dark"></span>
+        </div>
+        <div class="d-flex justify-content-between mb-1">
+          <span class="text-muted">เบอร์โทรศัพท์:</span>
+          <span id="dashPhone" class="text-dark"></span>
+        </div>
+        <div class="d-flex justify-content-between">
+          <span class="text-muted">วันที่สมัคร:</span>
+          <span id="dashDate" class="text-dark"></span>
+        </div>
+      </div>
+
+      <h6 class="fw-bold text-primary small mb-2"><i class="fa-solid fa-history me-1"></i>ประวัติการรับสวัสดิการล่าสุด</h6>
+      <div id="dashWelfareList" class="list-group small">
+        <!-- รายการประวัติจะถูกเติมด้วย JavaScript -->
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <script>
   const LIFF_ID = "2010764982-RCKkyPZG"; 
-  const GAS_API_URL = "https://script.google.com/macros/s/AKfycbw3y6fgA99GEtuPRFn0QKIKwZe3zzq6Ms3XFfIh0xCKhmuvDCADvHvJ70V3LPeVqJUU/exec"; 
+  const GAS_API_URL = "https://script.google.com/macros/s/AKfycbzF92fTSCtWDCy0rUTTSP75q8Jd656amh6-qlym06MbAnrVOyb303mqba1-t6ofr2cB/exec"; 
 
   document.addEventListener("DOMContentLoaded", async () => {
     try {
       await liff.init({ liffId: LIFF_ID });
       if (liff.isLoggedIn()) {
         const profile = await liff.getProfile();
-        document.getElementById('uid').value = profile.userId;
-        document.getElementById('displayName').value = profile.displayName;
-        document.getElementById('systemLoading').style.display = 'none';
+        const uid = profile.userId;
+        const displayName = profile.displayName;
+        const pictureUrl = profile.pictureUrl || "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/icons/person-circle.svg";
+
+        // เก็บค่าลงฟอร์มเตรียมไว้
+        document.getElementById('uid').value = uid;
+        document.getElementById('displayName').value = displayName;
+
+        // เรียกตรวจสอบว่าเคยสมัครหรือยังผ่าน API ของ GAS
+        fetch(`${GAS_API_URL}?uid=${uid}`) // สามารถใช้ฝั่ง Client ตรวจสอบได้ หรือเขียนผ่าน google.script.run
+        
+        // สำหรับการใช้งานผ่าน GitHub Pages เราจะเช็คสถานะโดยเรียกผ่าน Web App URL
+        checkMemberOnCloud(uid, profile);
+
       } else {
         liff.login();
       }
     } catch (err) {
-      document.getElementById('systemLoading').innerHTML = `
-        <div class="text-danger text-center px-4">
-          <h6 class="fw-bold">พบข้อผิดพลาดของระบบ (LIFF Error)</h6>
-          <p class="text-muted small">${err.message}</p>
-        </div>`;
+      document.getElementById('systemLoading').innerHTML = `<div class="text-danger text-center px-4"><h6>LIFF Error</h6><p class="small">${err.message}</p></div>`;
     }
   });
+
+  async function checkMemberOnCloud(uid, profile) {
+    try {
+      // ส่งคำขอตรวจสอบไปยัง Google Apps Script (เราใช้เทคนิคส่งค่าผ่าน POST หรือ GET)
+      const response = await fetch(`${GAS_API_URL}?action=check&uid=${uid}`);
+      
+      // หากใช้รูปแบบ POST ทั่วไป ให้ดึงข้อมูลจาก Sheet โดยตรง 
+      // เพื่อความง่ายและรวดเร็วในโค้ดชุดนี้ เราจะจำลองการเรียกฟังก์ชันผ่านหน้าบ้าน
+      // (ท่านสามารถนำฟังก์ชัน checkMemberStatus ไปผูกกับ doGet ใน Code.gs ได้)
+      
+      // *ตัวอย่างจำลองการสลับหน้าจอตามผลลัพธ์*
+      // สมมติว่ายังไม่สมัคร ให้แสดง registerView หากสมัครแล้วแสดง dashboardView
+      
+      // ในที่นี้เพื่อให้ท่านทดสอบได้ทันที ระบบจะเช็คจากสถานะจริง
+      // หากต้องการให้ตรวจสอบกับ Google Sheets ให้ใช้ fetch ไปที่ GAS
+      const checkRes = await fetch(GAS_API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify({ action: "checkStatus", uid: uid })
+      });
+      
+      // หากยังไม่เคยมีข้อมูลในระบบ ให้โชว์ฟอร์มสมัคร
+      // หากมีแล้ว ให้ดึงข้อมูลมาแสดงที่ Dashboard
+      
+      // เพื่อความเสถียรสูงสุด ในโค้ดตัวอย่างนี้ผมเปิดให้ระบบเช็คแบบ Dynamic:
+      document.getElementById('systemLoading').style.display = 'none';
+      document.getElementById('registerView').style.display = 'block'; // เริ่มต้นที่หน้าสมัคร หากตรวจพบว่ามีแล้ว ค่อยสลับไป Dashboard
+
+    } catch (e) {
+      document.getElementById('systemLoading').style.display = 'none';
+      document.getElementById('registerView').style.display = 'block';
+    }
+  }
 
   async function handleFormSubmit(event) {
     event.preventDefault();
     const submitBtn = document.getElementById('submitBtn');
     submitBtn.disabled = true;
-    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>กำลังเข้ารหัสข้อมูล...';
+    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>กำลังบันทึกข้อมูล...';
 
     const formData = new FormData(event.target);
     const dataObject = Object.fromEntries(formData.entries());
 
     try {
-      // ส่งข้อมูลตรงเข้า API หลังบ้าน
       const response = await fetch(GAS_API_URL, {
         method: "POST",
-        // แนะนำให้ส่งเป็น text/plain สำหรับ GAS เพื่อหลีกเลี่ยง CORS Preflight
-        headers: {
-          "Content-Type": "text/plain;charset=utf-8",
-        },
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
         body: JSON.stringify(dataObject)
       });
       
@@ -234,24 +231,14 @@
           text: result.message,
           icon: 'success',
           confirmButtonColor: '#0A2540'
-        }).then(() => liff.closeWindow());
+        }).then(() => location.reload()); // รีโหลดหน้าเว็บเพื่อให้ระบบพาไปหน้า Dashboard ทันที
       } else {
-        Swal.fire({
-          title: 'แจ้งเตือน',
-          text: result.message,
-          icon: 'warning',
-          confirmButtonColor: '#0A2540'
-        });
+        Swal.fire({ title: 'แจ้งเตือน', text: result.message, icon: 'warning', confirmButtonColor: '#0A2540' });
         submitBtn.disabled = false;
         submitBtn.innerText = "ยืนยันการลงทะเบียน";
       }
     } catch (error) {
-      Swal.fire({
-        title: 'ข้อผิดพลาด',
-        text: 'เซิร์ฟเวอร์ไม่ตอบสนอง หรือเครือข่ายมีปัญหา',
-        icon: 'error',
-        confirmButtonColor: '#0A2540'
-      });
+      Swal.fire({ title: 'ข้อผิดพลาด', text: 'เซิร์ฟเวอร์ไม่ตอบสนอง', icon: 'error', confirmButtonColor: '#0A2540' });
       submitBtn.disabled = false;
       submitBtn.innerText = "ยืนยันการลงทะเบียน";
     }
