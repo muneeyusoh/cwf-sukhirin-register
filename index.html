@@ -40,6 +40,49 @@
     .btn-fintech { background-color: var(--fintech-primary); color: white; border-radius: 10px; padding: 12px; font-weight: 500; border: none; transition: 0.3s; }
     .btn-fintech:hover { background-color: #06182c; color: white; }
     #systemLoading { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.95); z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+
+    /* New Action Button Styles */
+    .action-button {
+      background: white;
+      border: 1px solid #E2E8F0;
+      border-radius: 12px;
+      padding: 15px 10px;
+      text-align: center;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none;
+      color: #333;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+    }
+    .action-button:hover, .action-button:active {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+      border-color: var(--fintech-accent);
+      color: var(--fintech-primary);
+    }
+    .action-icon-wrapper {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      margin-bottom: 5px;
+    }
+    .icon-contrib { background: rgba(0, 208, 132, 0.1); color: #00D084; }
+    .icon-welfare { background: rgba(245, 158, 11, 0.1); color: #F59E0B; }
+    .action-button-text {
+      font-weight: 600;
+      font-size: 0.9rem;
+      line-height: 1.2;
+    }
+    
   </style>
 </head>
 <body>
@@ -97,15 +140,26 @@
     <img id="userAvatar" src="" class="profile-img" alt="Profile">
     <h5 id="dashName" class="fw-bold mt-2 mb-1 text-dark"></h5>
     <p id="dashCenter" class="text-muted small mb-2"><i class="fa-solid fa-location-dot me-1 text-danger"></i><span id="dashCenterText"></span></p>
-    <div id="dashStatusBadge" class="badge-status bg-warning text-dark d-inline-block mb-3"></div>
-    <!-- นำโค้ดนี้ไปวางต่อจาก <div id="dashStatusBadge"...></div> ในไฟล์ index.html -->
-    <div class="d-flex gap-2 mb-3 px-2">
-      <button onclick="window.location.href='https://liff.line.me/2010764982-BltKP85l'" class="btn btn-fintech flex-fill" style="background-color: #00D084;">
-        <i class="fa-solid fa-wallet mb-1 d-block"></i> สมทบเงิน
-      </button>
-      <button onclick="window.location.href='https://liff.line.me/2010764982-opxguAid'" class="btn btn-fintech flex-fill" style="background-color: #F59E0B;">
-        <i class="fa-solid fa-hand-holding-medical mb-1 d-block"></i> ขอสวัสดิการ
-      </button>
+    <div id="dashStatusBadge" class="badge-status bg-warning text-dark d-inline-block mb-4"></div>
+    
+    <!-- Redesigned Action Buttons -->
+    <div class="row g-3 mb-4 px-1">
+      <div class="col-6">
+        <a href="https://liff.line.me/2010764982-BltKP85l" class="action-button">
+          <div class="action-icon-wrapper icon-contrib">
+            <i class="fa-solid fa-coins"></i>
+          </div>
+          <span class="action-button-text">สมทบเงิน<br><span style="font-size:0.75rem; color:#64748b; font-weight:400;">รายปี</span></span>
+        </a>
+      </div>
+      <div class="col-6">
+        <a href="https://liff.line.me/2010764982-opxguAid" class="action-button">
+          <div class="action-icon-wrapper icon-welfare">
+            <i class="fa-solid fa-hand-holding-heart"></i>
+          </div>
+          <span class="action-button-text">ขอรับสวัสดิการ<br><span style="font-size:0.75rem; color:#64748b; font-weight:400;">ยื่นคำขอออนไลน์</span></span>
+        </a>
+      </div>
     </div>
     
     <div class="text-start border-top pt-3">
@@ -202,9 +256,9 @@
         const badge = document.getElementById('dashStatusBadge');
         badge.innerText = data.status;
         if(data.status === 'เป็นสมาชิก') {
-          badge.className = "badge-status bg-success text-white d-inline-block mb-3";
+          badge.className = "badge-status bg-success text-white d-inline-block mb-4";
         } else {
-          badge.className = "badge-status bg-warning text-dark d-inline-block mb-3";
+          badge.className = "badge-status bg-warning text-dark d-inline-block mb-4";
         }
 
         document.getElementById('dashTotalContrib').innerText = data.totalContribution;
@@ -219,9 +273,9 @@
         historyList.innerHTML = "";
         data.welfareHistory.forEach(item => {
           historyList.innerHTML += `
-            <div class="list-group-item d-flex justify-content-between align-items-center py-2">
-              <span>${item.type}</span>
-              <span class="badge bg-secondary">${item.status}</span>
+            <div class="list-group-item d-flex justify-content-between align-items-center py-2 border-0 border-bottom">
+              <span class="text-dark fw-medium">${item.type}</span>
+              <span class="badge bg-light text-secondary border">${item.status}</span>
             </div>
           `;
         });
