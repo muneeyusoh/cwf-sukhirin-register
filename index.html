@@ -271,12 +271,13 @@
     }
   }
 
-  // ฟังก์ชันแชร์ลิงก์แนะนำเพื่อน
+  // ฟังก์ชันแชร์ลิงก์แนะนำเพื่อน (อัปเกรดระดับ Enterprise UX)
   async function shareRefLink() {
     const userRefCode = document.getElementById('dashAppId').innerText; 
     const shareUrl = `https://liff.line.me/${LIFF_ID}?ref=${userRefCode}`;
     
-    if (liff.isApiAvailable('shareTargetPicker')) {
+    // 1. กรณีใช้งานอยู่ภายในแอป LINE (LINE In-App Browser)
+    if (liff.isInClient() && liff.isApiAvailable('shareTargetPicker')) {
       try {
         await liff.shareTargetPicker([
           {
@@ -285,38 +286,45 @@
             contents: {
               type: "bubble",
               body: {
-                type: "box",
-                layout: "vertical",
+                type: "box", layout: "vertical",
                 contents: [
                   { type: "text", text: "กองทุนสวัสดิการชุมชน", weight: "bold", size: "xl", color: "#0A2540" },
                   { type: "text", text: "ร่วมสร้างสวัสดิการและหลักประกันชีวิตไปด้วยกัน สมัครสมาชิกผ่านลิงก์นี้รับสิทธิประโยชน์เพียบ!", wrap: true, size: "sm", color: "#666666", margin: "md" }
                 ]
               },
               footer: {
-                type: "box",
-                layout: "vertical",
+                type: "box", layout: "vertical",
                 contents: [
-                  {
-                    type: "button",
-                    action: { type: "uri", label: "คลิกสมัครสมาชิก", uri: shareUrl },
-                    style: "primary",
-                    backgroundColor: "#00D084"
-                  }
+                  { type: "button", action: { type: "uri", label: "คลิกสมัครสมาชิก", uri: shareUrl }, style: "primary", backgroundColor: "#00D084" }
                 ]
               }
             }
           }
         ]);
-        Swal.fire({ toast: true, position: 'top', icon: 'success', title: 'ส่งคำเชิญให้เพื่อนสำเร็จ!', showConfirmButton: false, timer: 2000 });
+        Swal.fire({ toast: true, position: 'top', icon: 'success', title: 'ส่งคำเชิญใน LINE สำเร็จ!', showConfirmButton: false, timer: 2000 });
       } catch (error) {
-        console.log("Share cancelled or error", error);
+        console.log("LINE Share cancelled", error);
       }
-    } else {
+    } 
+    // 2. กรณีเปิดนอกแอป LINE ให้เรียกฟังก์ชัน Share ของมือถือ (iOS/Android Native Share)
+    else if (navigator.share) {
+      try {
+        await navigator.share({
+          title: 'กองทุนสวัสดิการชุมชน เทศบาลตำบลสุคิริน',
+          text: 'ร่วมสร้างสวัสดิการและหลักประกันชีวิตไปด้วยกัน สมัครสมาชิกคลิกเลย!',
+          url: shareUrl
+        });
+        Swal.fire({ toast: true, position: 'top', icon: 'success', title: 'แชร์สำเร็จ!', showConfirmButton: false, timer: 2000 });
+      } catch (error) {
+        console.log("OS Share cancelled", error);
+      }
+    } 
+    // 3. กรณีมือถือ/เบราว์เซอร์ไม่รองรับ (Fallback)
+    else {
       navigator.clipboard.writeText(shareUrl);
       Swal.fire('คัดลอกลิงก์สำเร็จ', 'ส่งลิงก์นี้ให้เพื่อนเพื่อสมัครสมาชิกได้เลย', 'success');
     }
   }
-
   async function handleFormSubmit(event) {
     event.preventDefault();
     const submitBtn = document.getElementById('submitBtn');
