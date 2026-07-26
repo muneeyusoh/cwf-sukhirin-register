@@ -81,15 +81,15 @@
       <div class="mb-3"><input type="tel" class="form-control fw-bold text-primary" name="nationalId" placeholder="เลขประจำตัวประชาชน 13 หลัก" oninput="formatNatId(this)" maxlength="17" required></div>
       <div class="mb-3"><input type="tel" class="form-control" name="phone" placeholder="เบอร์โทรศัพท์ติดต่อ" oninput="formatPhone(this)" maxlength="12" required></div>
       <div class="mb-4">
-       <select class="form-select fw-bold text-dark" id="editCenter" name="center" required>
-  <option value="" disabled selected>-- เลือกศูนย์ประสานงานใกล้บ้าน --</option>
-  <option value="ศูนย์ชุมชนปารีย์">ศูนย์ชุมชนปารีย์</option>
-  <option value="ศูนย์ชุมชนเกียร์">ศูนย์ชุมชนเกียร์</option>
-  <option value="ศูนย์ชุมชนราษฎร์สามัคคี">ศูนย์ชุมชนราษฎร์สามัคคี</option>
-  <option value="ศูนย์ชุมชนกลันตัน">ศูนย์ชุมชนกลันตัน</option>
-  <option value="ศูนย์ชุมชนมาโมง">ศูนย์ชุมชนมาโมง</option>
-  <option value="ศูนย์ชุมชนสุคิริน">ศูนย์ชุมชนสุคิริน</option>
-</select>
+       <select class="form-select fw-bold text-dark" name="center" required>
+       <option value="" disabled selected>-- เลือกศูนย์ประสานงานใกล้บ้าน --</option>
+       <option value="ศูนย์ชุมชนปารีย์">ศูนย์ชุมชนปารีย์</option>
+       <option value="ศูนย์ชุมชนเกียร์">ศูนย์ชุมชนเกียร์</option>
+       <option value="ศูนย์ชุมชนราษฎร์สามัคคี">ศูนย์ชุมชนราษฎร์สามัคคี</option>
+       <option value="ศูนย์ชุมชนกลันตัน">ศูนย์ชุมชนกลันตัน</option>
+       <option value="ศูนย์ชุมชนมาโมง">ศูนย์ชุมชนมาโมง</option>
+       <option value="ศูนย์ชุมชนสุคิริน">ศูนย์ชุมชนสุคิริน</option>
+      </select>
       </div>
       <button type="submit" class="btn btn-fintech w-100 py-3 rounded-3" id="submitRegBtn"><i class="fa-solid fa-check-circle me-2"></i> สมัครสมาชิก</button>
     </form>
@@ -198,12 +198,7 @@
       </div>
       <div class="mb-3"><label class="small text-muted fw-bold">สังกัดศูนย์</label>
         <select id="editCenter" name="center" class="form-select">
-          <option value="ศูนย์ชุมชนปารีย์">ศูนย์ชุมชนปารีย์</option>
-  <option value="ศูนย์ชุมชนเกียร์">ศูนย์ชุมชนเกียร์</option>
-  <option value="ศูนย์ชุมชนราษฎร์สามัคคี">ศูนย์ชุมชนราษฎร์สามัคคี</option>
-  <option value="ศูนย์ชุมชนกลันตัน">ศูนย์ชุมชนกลันตัน</option>
-  <option value="ศูนย์ชุมชนมาโมง">ศูนย์ชุมชนมาโมง</option>
-  <option value="ศูนย์ชุมชนสุคิริน">ศูนย์ชุมชนสุคิริน</option>
+          <option value="ศูนย์ชุมชนปารีย์">ศูนย์ชุมชนปารีย์</option><option value="ศูนย์ชุมชนเกียร์">ศูนย์ชุมชนเกียร์</option><option value="ศูนย์ชุมชนราษฎร์สามัคคี">ศูนย์ชุมชนราษฎร์สามัคคี</option><option value="ศูนย์ชุมชนกลันตัน">ศูนย์ชุมชนกลันตัน</option><option value="ศูนย์ชุมชนมาโมง">ศูนย์ชุมชนมาโมง</option><option value="ศูนย์ชุมชนสุคิริน">ศูนย์ชุมชนสุคิริน</option>
         </select>
       </div>
       <div class="mb-3"><label class="small text-muted fw-bold">ที่อยู่ปัจจุบัน (สำหรับทำ GIS)</label><textarea id="editAddress" name="address" class="form-control" rows="2"></textarea></div>
