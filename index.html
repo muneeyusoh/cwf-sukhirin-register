@@ -24,11 +24,11 @@
     /* 🖼️ ปรับรูปโปรไฟล์ไม่ให้ทับตัวหนังสือ */
     .profile-img { width: 85px; height: 85px; border-radius: 50%; object-fit: cover; border: 4px solid white; margin-top: -50px; background: white; box-shadow: 0 4px 15px rgba(0,0,0,0.15); }
     
-    /* 🌟 Status Badge (กลับมาเป็นแคปซูลเด่นชัดแบบเดิม) */
+    /* 🌟 Status Badge */
     .badge-status { padding: 8px 24px; border-radius: 30px; font-size: 0.9rem; font-weight: 700; box-shadow: 0 4px 6px rgba(0,0,0,0.05); display: inline-block; margin-bottom: 24px; }
-    .status-pending { background-color: #FFC107; color: #1F2937; } /* สีเหลืองทองเด่นชัด */
-    .status-active { background-color: #10B981; color: #FFFFFF; } /* สีเขียว */
-    .status-inactive { background-color: #EF4444; color: #FFFFFF; } /* สีแดง */
+    .status-pending { background-color: #FFC107; color: #1F2937; } 
+    .status-active { background-color: #10B981; color: #FFFFFF; } 
+    .status-inactive { background-color: #EF4444; color: #FFFFFF; } 
     
     /* 💊 Modern Action Capsules (แท่งแคปซูลการเงินอัจฉริยะ) */
     .capsule-box { border-radius: 16px; padding: 18px 20px; color: white; display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; box-shadow: 0 8px 15px -3px rgba(0,0,0,0.15); }
@@ -72,7 +72,7 @@
 
 <div class="container mb-5">
   
-  <!-- 📝 Register View (ซ่อนไว้สำหรับคนยังไม่สมัคร) -->
+  <!-- 📝 Register View -->
   <div id="registerView" class="card-box" style="display: none;">
     <h5 class="mb-4 text-center fw-bold text-dark"><i class="fa-solid fa-user-plus me-2 text-primary"></i>ลงทะเบียนสมาชิกใหม่</h5>
     <form id="registerForm" onsubmit="handleRegister(event)">
@@ -101,7 +101,7 @@
     </form>
   </div>
 
-  <!-- 📊 Dashboard View (หน้าจอหลักโฉมใหม่) -->
+  <!-- 📊 Dashboard View -->
   <div id="dashboardView" class="card-box text-center" style="display: none;">
     <img id="userAvatar" src="" class="profile-img" alt="Profile">
     <h4 id="dashName" class="fw-bold mt-2 mb-0 text-dark"></h4>
@@ -124,7 +124,7 @@
       <div>
         <small class="opacity-90 d-block fw-bold">ยอดสมทบสะสม</small>
         <h3 class="fw-bold mb-0 text-white"><span id="dashTotalContrib">0</span> <span style="font-size: 1rem; font-weight: normal;">฿</span></h3>
-        <span class="outstanding-badge">ยอดค้างสมทบ: <span id="dashOutstanding">0</span> ฿</span>
+        <span class="outstanding-badge text-white">ยอดค้างสมทบ: <span id="dashOutstanding" class="fw-bold">0</span> ฿</span>
       </div>
       <a href="https://liff.line.me/2010764982-BltKP85l" class="btn-inside-capsule"><i class="fa-solid fa-coins me-1"></i> สมทบเงิน</a>
     </div>
@@ -140,20 +140,17 @@
     
     <div class="text-start border-top pt-4">
       <!-- 📋 ข้อมูลส่วนตัว (Digital ID Card) -->
-      <div class="section-title m-0 mb-3"><i class="fa-solid fa-id-card text-primary me-2"></i> ข้อมูลสมาชิก</div>
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <div class="section-title m-0"><i class="fa-solid fa-id-card text-primary me-2"></i> ข้อมูลสมาชิก</div>
+        <button onclick="openProfileEditor()" class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-bold" style="font-size:0.75rem;"><i class="fa-solid fa-pen me-1"></i> แก้ไข</button>
+      </div>
       
       <div class="info-list shadow-sm">
         <div class="info-row"><span class="info-label">รหัสสมาชิก</span><span class="info-data text-primary fs-5" id="dashMemberId"></span></div>
         <div class="info-row"><span class="info-label">เลขประจำตัว ปชช.</span><span class="info-data" id="dashNatId"></span></div>
+        <div class="info-row"><span class="info-label">เบอร์โทรศัพท์</span><span class="info-data" id="dashPhone"></span></div>
         <div class="info-row"><span class="info-label">อายุการเป็นสมาชิก</span><span class="info-data text-success"><span id="dashAgeYears"></span></span></div>
         <div class="info-row"><span class="info-label">วันที่สมัคร</span><span class="info-data" id="dashDate"></span></div>
-      </div>
-
-      <!-- 🛠️ ปุ่มแก้ไขโปรไฟล์ย่อส่วน (Smart Micro-Action) -->
-      <div class="text-center mb-4">
-        <button onclick="openProfileEditor()" class="btn btn-outline-primary btn-sm rounded-pill px-4 py-2 fw-bold shadow-sm">
-          <i class="fa-solid fa-user-pen me-2"></i> จัดการข้อมูลส่วนตัวแบบเต็ม
-        </button>
       </div>
 
       <h6 class="fw-bold text-dark small mb-3 mt-4"><i class="fa-solid fa-clock-rotate-left me-2 text-muted"></i> ประวัติรับสวัสดิการล่าสุด</h6>
@@ -161,7 +158,7 @@
     </div>
   </div>
 
-  <!-- ✏️ Edit Profile View (ระบบจัดการตัวเองเต็มรูปแบบ - ซ่อนไว้) -->
+  <!-- ✏️ Edit Profile View (ระบบจัดการตัวเองเต็มรูปแบบ) -->
   <div id="editProfileView" class="card-box" style="display: none;">
     <div class="d-flex align-items-center mb-4 pb-3 border-bottom">
       <button onclick="closeProfileEditor()" class="btn btn-light rounded-circle me-3 border"><i class="fa-solid fa-arrow-left"></i></button>
@@ -242,27 +239,37 @@
 </div>
 
 <script>
-  // ⚠️ อย่าลืมนำ URL API เส้นใหม่หลังจาก Deploy มาใส่ตรงนี้นะครับ
+  // ⚠️ อย่าลืมนำ URL API หลัง Deploy มาใส่ตรงนี้นะครับ
   const LIFF_ID = "2010764982-RCKkyPZG"; 
   const GAS_API_URL = "https://script.google.com/macros/s/AKfycbw8ohbEXMSqCKzwTHeCem8pxpM_NcSA_twE3r4QU1HvsNZjtlEydGMoV6ffP1yBUOk/exec"; 
   
   let cachedUserData = null;
 
+  // ฟังก์ชันจัดรูปแบบตัวเลข (เสถียรและไร้บัค 100%)
   function formatNatId(input) {
-    let val = input.value.replace(/\D/g, ''); if (val.length > 13) val = val.substring(0, 13);
-    let f = val;
-    if (val.length > 1) f = val.substring(0,1) + '-' + val.substring(1);
-    if (val.length > 5) f = f.substring(0,6) + '-' + val.substring(6);
-    if (val.length > 10) f = f.substring(0,12) + '-' + val.substring(10,12);
-    if (val.length > 12) f = f.substring(0,15) + '-' + val.substring(12,13);
-    input.value = f;
+    let val = input.value.replace(/\D/g, ''); 
+    if (val.length > 13) val = val.substring(0, 13);
+    let formatted = '';
+    if (val.length > 0) {
+      formatted += val.substring(0, 1);
+      if (val.length > 1) formatted += '-' + val.substring(1, 5);
+      if (val.length > 5) formatted += '-' + val.substring(5, 10);
+      if (val.length > 10) formatted += '-' + val.substring(10, 12);
+      if (val.length > 12) formatted += '-' + val.substring(12, 13);
+    }
+    input.value = formatted;
   }
+
   function formatPhone(input) {
-    let val = input.value.replace(/\D/g, ''); if (val.length > 10) val = val.substring(0, 10);
-    let f = val;
-    if (val.length > 3) f = val.substring(0,3) + '-' + val.substring(3);
-    if (val.length > 6) f = f.substring(0,7) + '-' + val.substring(6);
-    input.value = f;
+    let val = input.value.replace(/\D/g, ''); 
+    if (val.length > 10) val = val.substring(0, 10);
+    let formatted = '';
+    if (val.length > 0) {
+      formatted += val.substring(0, 3);
+      if (val.length > 3) formatted += '-' + val.substring(3, 6);
+      if (val.length > 6) formatted += '-' + val.substring(6, 10);
+    }
+    input.value = formatted;
   }
 
   document.addEventListener("DOMContentLoaded", async () => {
@@ -296,7 +303,7 @@
         document.getElementById('dashCenterText').innerText = " " + (data.center || "CWF Member");
         document.getElementById('dashCwfPoints').innerText = data.cwfPoints || 0;
         
-        // 🌟 Status Badge Rendering
+        // 🌟 Status Badge Rendering (สีตามสถานะ)
         const badge = document.getElementById('dashStatusBadge');
         badge.innerText = data.status;
         if (data.status === 'เป็นสมาชิก') {
@@ -311,10 +318,10 @@
         document.getElementById('dashTotalWelfare').innerText = (data.totalWelfareReceived || 0).toLocaleString();
         document.getElementById('dashOutstanding').innerText = (data.outstandingBalance || 0).toLocaleString();
         
-        // 📋 Info List (PDPA Masked)
+        // 📋 Info List 
         document.getElementById('dashMemberId').innerText = data.memberId || "-";
         
-        // 🔒 Format บัตรประชาชน (19609XXXX6862)
+        // 🔒 Format บัตรประชาชนแบบ PDPA (19609XXXX6862)
         let nId = String(data.nationalId || "").replace(/\D/g, '');
         document.getElementById('dashNatId').innerText = nId.length === 13 ? `${nId.substring(0,5)}XXXX${nId.substring(9,13)}` : "-";
         
@@ -323,7 +330,7 @@
         // ⏳ การคำนวณอายุสมาชิก
         let ageStr = "รอชำระเงิน";
         if (data.timestamp !== "-") {
-          const parts = data.timestamp.split('/'); 
+          const parts = data.timestamp.split('/'); // คาดหวัง Format DD/MM/YYYY
           if(parts.length === 3) {
             const regDate = new Date(parts[2], parts[1]-1, parts[0]);
             const days = Math.floor((new Date() - regDate) / (1000 * 60 * 60 * 24));
