@@ -18,9 +18,11 @@
     body { background-color: var(--bg-light); font-family: 'Prompt', sans-serif; color: #1E293B; }
     
     /* 📱 Header & Card Setup */
-    .app-header { background: linear-gradient(135deg, var(--fintech-primary), #1e3a8a); color: white; padding: 40px 20px 60px; text-align: center; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; box-shadow: 0 4px 15px rgba(10, 37, 64, 0.2); }
-    .card-box { background: white; padding: 25px; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.06); max-width: 600px; margin: -45px auto 30px; position: relative; border: 1px solid #E2E8F0; }
-    .profile-img { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 4px solid white; margin-top: -70px; background: white; box-shadow: 0 4px 15px rgba(0,0,0,0.15); }
+    .app-header { background: linear-gradient(135deg, var(--fintech-primary), #1e3a8a); color: white; padding: 40px 20px 80px; text-align: center; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; box-shadow: 0 4px 15px rgba(10, 37, 64, 0.2); }
+    .card-box { background: white; padding: 25px; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.06); max-width: 600px; margin: -50px auto 30px; position: relative; border: 1px solid #E2E8F0; }
+    
+    /* 🖼️ ปรับรูปโปรไฟล์ไม่ให้ทับตัวหนังสือ */
+    .profile-img { width: 85px; height: 85px; border-radius: 50%; object-fit: cover; border: 4px solid white; margin-top: -50px; background: white; box-shadow: 0 4px 15px rgba(0,0,0,0.15); }
     
     /* 🌟 Status Badge (กลับมาเป็นแคปซูลเด่นชัดแบบเดิม) */
     .badge-status { padding: 8px 24px; border-radius: 30px; font-size: 0.9rem; font-weight: 700; box-shadow: 0 4px 6px rgba(0,0,0,0.05); display: inline-block; margin-bottom: 24px; }
@@ -28,36 +30,29 @@
     .status-active { background-color: #10B981; color: #FFFFFF; } /* สีเขียว */
     .status-inactive { background-color: #EF4444; color: #FFFFFF; } /* สีแดง */
     
-    /* 💰 Financial Highlights (ใหญ่และเด่นโฟกัสสายตา) */
-    .financial-card { background: #FFFFFF; border-radius: 16px; padding: 20px 10px; border: 1px solid #E2E8F0; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.03); height: 100%; display: flex; flex-direction: column; justify-content: center; }
-    .financial-card .value { font-size: 1.7rem; font-weight: 700; letter-spacing: -0.5px; margin: 8px 0; }
-    .val-success { color: #059669; } 
-    .val-primary { color: #2563EB; } 
+    /* 💊 Modern Action Capsules (แท่งแคปซูลการเงินอัจฉริยะ) */
+    .capsule-box { border-radius: 16px; padding: 18px 20px; color: white; display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; box-shadow: 0 8px 15px -3px rgba(0,0,0,0.15); }
+    .capsule-cwf { background: linear-gradient(135deg, #F59E0B, #EA580C); }
+    .capsule-contrib { background: linear-gradient(135deg, #10B981, #059669); }
+    .capsule-welfare { background: linear-gradient(135deg, #3B82F6, #1D4ED8); }
     
-    /* 🚀 Action Buttons (กะทัดรัด แต่ชัดเจน) */
-    .action-row { display: flex; gap: 12px; margin-bottom: 24px; }
-    .action-btn-sm { flex: 1; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 16px; padding: 16px; text-align: center; text-decoration: none; color: #1E293B; display: flex; align-items: center; justify-content: center; gap: 12px; transition: all 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
-    .action-btn-sm:active { transform: scale(0.96); border-color: var(--fintech-accent); }
-    .action-btn-sm .icon-circle { width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
-    .icon-contrib { background: #DCFCE7; color: #16A34A; }
-    .icon-welfare { background: #FEF3C7; color: #D97706; }
-    .action-btn-sm span { font-weight: 700; font-size: 0.95rem; }
+    .btn-inside-capsule { background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; border-radius: 20px; padding: 8px 16px; font-size: 0.85rem; font-weight: 700; text-decoration: none; backdrop-filter: blur(4px); transition: 0.2s; white-space: nowrap; }
+    .btn-inside-capsule:active { transform: scale(0.95); background: rgba(255,255,255,0.3); color: white; }
     
+    .outstanding-badge { background: rgba(0,0,0,0.15); padding: 3px 10px; border-radius: 12px; font-size: 0.75rem; margin-top: 5px; display: inline-block; font-weight: 500; }
+
     /* 📋 Member Info Section (Digital ID Card) */
-    .info-list { background: #F8FAFC; border-radius: 16px; padding: 16px; border: 1px solid #E2E8F0; margin-bottom: 24px; text-align: left;}
+    .info-list { background: #F8FAFC; border-radius: 16px; padding: 16px; border: 1px solid #E2E8F0; margin-bottom: 20px; text-align: left;}
     .info-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px dashed #CBD5E1; }
     .info-row:last-child { border-bottom: none; padding-bottom: 0; }
     .info-label { color: #64748B; font-size: 0.85rem; font-weight: 500; }
     .info-data { color: #0F172A; font-size: 0.9rem; font-weight: 600; text-align: right; }
     
     /* ⚙️ General Setup */
-    .cwf-card { background: linear-gradient(135deg, #F59E0B, #EA580C); border-radius: 16px; padding: 16px 20px; color: white; display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; box-shadow: 0 8px 15px -3px rgba(234, 88, 12, 0.25); }
     .section-title { font-size: 1rem; font-weight: 700; color: var(--fintech-primary); display: flex; align-items: center; gap: 8px; margin-bottom: 15px; text-align: left; }
-    
     .form-control, .form-select { border-radius: 10px; border: 1px solid #CBD5E1; background-color: #F8FAFC; font-size: 0.9rem; padding: 12px 14px; }
     .form-control:focus, .form-select:focus { background-color: #FFFFFF; border-color: var(--fintech-accent); box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15); }
     .form-control:read-only { background-color: #E2E8F0; color: #64748B; cursor: not-allowed; }
-    
     .btn-fintech { background-color: var(--fintech-primary); color: white; border-radius: 12px; padding: 14px; font-weight: 600; font-size: 1.05rem; border: none; transition: 0.3s; box-shadow: 0 4px 10px rgba(10,37,64,0.3); }
     
     #systemLoading { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.95); z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
@@ -106,68 +101,59 @@
     </form>
   </div>
 
-  <!-- 📊 Dashboard View (หน้าจอหลักโฉมใหม่ Modern F-Pattern) -->
+  <!-- 📊 Dashboard View (หน้าจอหลักโฉมใหม่) -->
   <div id="dashboardView" class="card-box text-center" style="display: none;">
     <img id="userAvatar" src="" class="profile-img" alt="Profile">
     <h4 id="dashName" class="fw-bold mt-2 mb-0 text-dark"></h4>
     <p class="text-muted small mb-2"><i class="fa-solid fa-location-dot me-1 text-danger"></i><span id="dashCenterText"></span></p>
     
-    <!-- 🌟 Status Badge (กลับมาเป็นแคปซูลเหลืองเด่นตามภาพ) -->
+    <!-- 🌟 Status Badge -->
     <div id="dashStatusBadge" class="badge-status">รอตรวจสอบ</div>
     
-    <!-- 🎁 กล่องแต้ม CWF -->
-    <div class="cwf-card text-start">
+    <!-- 🎁 กล่อง 1: CWF Points -->
+    <div class="capsule-box capsule-cwf text-start">
       <div>
-        <small class="opacity-90 d-block text-white">คะแนนสะสมอาสาสมัคร</small>
+        <small class="opacity-90 d-block fw-bold">คะแนนสะสมอาสาสมัคร</small>
         <h3 class="fw-bold mb-0 text-white"><span id="dashCwfPoints">0</span> <span style="font-size: 1rem; font-weight: normal;">CWF</span></h3>
       </div>
-      <button onclick="shareRefLink()" class="btn btn-light btn-sm px-3 py-2 fw-bold text-warning shadow-sm rounded-pill"><i class="fa-solid fa-share-nodes me-1"></i> ชวนเพื่อน</button>
+      <a href="#" onclick="shareRefLink()" class="btn-inside-capsule text-warning bg-light"><i class="fa-solid fa-share-nodes me-1"></i> ชวนเพื่อน</a>
     </div>
 
-    <!-- 🚀 ปุ่มกดทำธุรกรรม (กะทัดรัด แนวนอน ชัดเจน) -->
-    <div class="action-row">
-      <a href="https://liff.line.me/2010764982-BltKP85l" class="action-btn-sm border-success border-opacity-25">
-        <div class="icon-circle icon-contrib"><i class="fa-solid fa-coins"></i></div>
-        <span class="text-success">สมทบเงิน</span>
-      </a>
-      <a href="https://liff.line.me/2010764982-opxguAid" class="action-btn-sm border-warning border-opacity-25">
-        <div class="icon-circle icon-welfare"><i class="fa-solid fa-hand-holding-heart"></i></div>
-        <span class="text-warning text-dark">ขอสวัสดิการ</span>
-      </a>
+    <!-- 💰 กล่อง 2: สมทบเงินสะสม -->
+    <div class="capsule-box capsule-contrib text-start">
+      <div>
+        <small class="opacity-90 d-block fw-bold">ยอดสมทบสะสม</small>
+        <h3 class="fw-bold mb-0 text-white"><span id="dashTotalContrib">0</span> <span style="font-size: 1rem; font-weight: normal;">฿</span></h3>
+        <span class="outstanding-badge">ยอดค้างสมทบ: <span id="dashOutstanding">0</span> ฿</span>
+      </div>
+      <a href="https://liff.line.me/2010764982-BltKP85l" class="btn-inside-capsule"><i class="fa-solid fa-coins me-1"></i> สมทบเงิน</a>
     </div>
 
-    <!-- 💰 ตัวเลขการเงิน (ใหญ่ เด่นชัด โฟกัสสายตา) -->
-    <div class="row g-3 mb-4">
-      <div class="col-6">
-        <div class="financial-card">
-          <span class="small text-muted fw-bold">ยอดสมทบสะสม</span>
-          <div class="value val-success"><span id="dashTotalContrib">0</span></div>
-          <span class="small text-muted fw-bold">บาท</span>
-        </div>
+    <!-- 🏥 กล่อง 3: รับสวัสดิการรวม -->
+    <div class="capsule-box capsule-welfare text-start mb-4">
+      <div>
+        <small class="opacity-90 d-block fw-bold">รับสวัสดิการรวม</small>
+        <h3 class="fw-bold mb-0 text-white"><span id="dashTotalWelfare">0</span> <span style="font-size: 1rem; font-weight: normal;">฿</span></h3>
       </div>
-      <div class="col-6">
-        <div class="financial-card">
-          <span class="small text-muted fw-bold">รับสวัสดิการรวม</span>
-          <div class="value val-primary"><span id="dashTotalWelfare">0</span></div>
-          <span class="small text-muted fw-bold">บาท</span>
-        </div>
-      </div>
+      <a href="https://liff.line.me/2010764982-opxguAid" class="btn-inside-capsule"><i class="fa-solid fa-hand-holding-heart me-1"></i> ขอสวัสดิการ</a>
     </div>
     
     <div class="text-start border-top pt-4">
-      <!-- 📋 ข้อมูลส่วนตัว (Digital ID Card + ปุ่มแก้ไขย่อส่วน) -->
-      <div class="d-flex justify-content-between align-items-center mb-2">
-        <div class="section-title m-0"><i class="fa-solid fa-id-card text-primary me-2"></i> ข้อมูลสมาชิก</div>
-        <button onclick="openProfileEditor()" class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-bold" style="font-size:0.75rem;"><i class="fa-solid fa-pen me-1"></i> แก้ไข</button>
-      </div>
+      <!-- 📋 ข้อมูลส่วนตัว (Digital ID Card) -->
+      <div class="section-title m-0 mb-3"><i class="fa-solid fa-id-card text-primary me-2"></i> ข้อมูลสมาชิก</div>
       
       <div class="info-list shadow-sm">
         <div class="info-row"><span class="info-label">รหัสสมาชิก</span><span class="info-data text-primary fs-5" id="dashMemberId"></span></div>
         <div class="info-row"><span class="info-label">เลขประจำตัว ปชช.</span><span class="info-data" id="dashNatId"></span></div>
-        <div class="info-row"><span class="info-label">เบอร์โทรศัพท์</span><span class="info-data" id="dashPhone"></span></div>
-        <div class="info-row"><span class="info-label">อายุสมาชิก</span><span class="info-data text-success"><span id="dashAgeYears"></span></span></div>
+        <div class="info-row"><span class="info-label">อายุการเป็นสมาชิก</span><span class="info-data text-success"><span id="dashAgeYears"></span></span></div>
         <div class="info-row"><span class="info-label">วันที่สมัคร</span><span class="info-data" id="dashDate"></span></div>
-        <div class="info-row align-items-start"><span class="info-label">ที่อยู่ (GIS)</span><span class="info-data text-truncate ms-3" style="max-width: 60%;" id="dashAddress"></span></div>
+      </div>
+
+      <!-- 🛠️ ปุ่มแก้ไขโปรไฟล์ย่อส่วน (Smart Micro-Action) -->
+      <div class="text-center mb-4">
+        <button onclick="openProfileEditor()" class="btn btn-outline-primary btn-sm rounded-pill px-4 py-2 fw-bold shadow-sm">
+          <i class="fa-solid fa-user-pen me-2"></i> จัดการข้อมูลส่วนตัวแบบเต็ม
+        </button>
       </div>
 
       <h6 class="fw-bold text-dark small mb-3 mt-4"><i class="fa-solid fa-clock-rotate-left me-2 text-muted"></i> ประวัติรับสวัสดิการล่าสุด</h6>
@@ -310,7 +296,7 @@
         document.getElementById('dashCenterText').innerText = " " + (data.center || "CWF Member");
         document.getElementById('dashCwfPoints').innerText = data.cwfPoints || 0;
         
-        // 🌟 Status Badge Rendering (สีตามสถานะ)
+        // 🌟 Status Badge Rendering
         const badge = document.getElementById('dashStatusBadge');
         badge.innerText = data.status;
         if (data.status === 'เป็นสมาชิก') {
@@ -323,18 +309,21 @@
 
         document.getElementById('dashTotalContrib').innerText = (data.totalContribution || 0).toLocaleString();
         document.getElementById('dashTotalWelfare').innerText = (data.totalWelfareReceived || 0).toLocaleString();
+        document.getElementById('dashOutstanding').innerText = (data.outstandingBalance || 0).toLocaleString();
         
         // 📋 Info List (PDPA Masked)
         document.getElementById('dashMemberId').innerText = data.memberId || "-";
         
+        // 🔒 Format บัตรประชาชน (19609XXXX6862)
         let nId = String(data.nationalId || "").replace(/\D/g, '');
-        document.getElementById('dashNatId').innerText = nId.length === 13 ? `X-XXXX-XXXXX-${nId.substring(10,12)}-${nId.substring(12,13)}` : "-";
+        document.getElementById('dashNatId').innerText = nId.length === 13 ? `${nId.substring(0,5)}XXXX${nId.substring(9,13)}` : "-";
+        
         document.getElementById('dashPhone').innerText = data.phone || "-";
         
         // ⏳ การคำนวณอายุสมาชิก
-        let ageStr = "อยู่ระหว่างดำเนินการ";
+        let ageStr = "รอชำระเงิน";
         if (data.timestamp !== "-") {
-          const parts = data.timestamp.split('/'); // คาดหวัง Format DD/MM/YYYY
+          const parts = data.timestamp.split('/'); 
           if(parts.length === 3) {
             const regDate = new Date(parts[2], parts[1]-1, parts[0]);
             const days = Math.floor((new Date() - regDate) / (1000 * 60 * 60 * 24));
@@ -345,7 +334,6 @@
         }
         document.getElementById('dashAgeYears').innerText = ageStr;
         document.getElementById('dashDate').innerText = data.timestamp || "-";
-        document.getElementById('dashAddress').innerText = data.address || "ไม่ระบุที่อยู่";
 
         // Welfare History
         const historyList = document.getElementById('dashWelfareList');
@@ -366,7 +354,7 @@
   function openProfileEditor() {
     if(!cachedUserData) return; const d = cachedUserData;
     document.getElementById('editMemId').value = d.memberId;
-    let nId = String(d.nationalId).replace(/\D/g, ''); document.getElementById('editNatId').value = nId.length===13 ? `X-XXXX-XXXXX-${nId.substring(10,12)}-${nId.substring(12,13)}` : d.nationalId;
+    let nId = String(d.nationalId).replace(/\D/g, ''); document.getElementById('editNatId').value = nId.length===13 ? `${nId.substring(0,5)}XXXX${nId.substring(9,13)}` : d.nationalId;
     
     if(d.prefix) document.getElementById('editPrefix').value = d.prefix; document.getElementById('editName').value = d.fullName; document.getElementById('editBirth').value = d.birthDate; document.getElementById('editPhone').value = d.phone.replace(/\D/g, '');
     document.getElementById('editEmail').value = d.email; if(d.center !== "-") document.getElementById('editCenter').value = d.center; if(d.address !== "-") document.getElementById('editAddress').value = d.address;
