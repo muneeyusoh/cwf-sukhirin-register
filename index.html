@@ -315,16 +315,35 @@
         let pId = String(data.phone || "").replace(/\D/g, '');
         document.getElementById('dashPhone').innerText = pId.length === 10 ? `${pId.substring(0,3)}-${pId.substring(3,6)}-${pId.substring(6,10)}` : "-";
         
-        // ⏳ การคำนวณอายุสมาชิก
+        // ⏳ การคำนวณอายุสมาชิกแบบละเอียดและแม่นยำ 100% (X ปี Y เดือน Z วัน)
         let ageStr = "รอชำระเงินงวดแรก";
-        if (data.timestamp !== "-") {
-          const parts = data.timestamp.split('/'); 
-          if(parts.length === 3) {
-            const regDate = new Date(parts[2], parts[1]-1, parts[0]);
-            const days = Math.floor((new Date() - regDate) / (1000 * 60 * 60 * 24));
-            if(days >= 365) { const y = Math.floor(days/365); const m = Math.floor((days%365)/30); ageStr = `${y} ปี ${m > 0 ? m + ' เดือน' : ''}`; }
-            else if(days >= 30) { ageStr = `${Math.floor(days/30)} เดือน`; }
-            else if(days >= 0) { ageStr = `${days} วัน`; }
+        if (data.timestamp && data.timestamp !== "-") {
+          const parts = data.timestamp.split('/'); // คาดหวัง Format DD/MM/YYYY
+          if (parts.length === 3) {
+            // สร้าง Date Object ของวันที่สมัคร และ วันที่ปัจจุบัน
+            const regDate = new Date(parts[2], parts[1] - 1, parts[0]);
+            const today = new Date();
+            
+            let years = today.getFullYear() - regDate.getFullYear();
+            let months = today.getMonth() - regDate.getMonth();
+            let days = today.getDate() - regDate.getDate();
+
+            // ตรรกะการคำนวณปฏิทิน: ถ้ายอดวันติดลบ ให้ยืมเดือนก่อนหน้ามา 1 เดือน
+            if (days < 0) {
+              months--;
+              // หาจำนวนวันของเดือนที่แล้ว
+              const prevMonth = new Date(today.getFullYear(), today.getMonth(), 0);
+              days += prevMonth.getDate();
+            }
+            
+            // ตรรกะการคำนวณปฏิทิน: ถ้ายอดเดือนติดลบ ให้ยืมปีมา 1 ปี (12 เดือน)
+            if (months < 0) {
+              years--;
+              months += 12;
+            }
+
+            // จัดรูปแบบการแสดงผลให้เป็น "X ปี Y เดือน Z วัน"
+            ageStr = `${years} ปี ${months} เดือน ${days} วัน`;
           }
         }
         document.getElementById('dashAgeYears').innerText = ageStr;
