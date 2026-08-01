@@ -571,31 +571,112 @@
     } catch (e) { Swal.fire('Error', 'ไม่สามารถประมวลผลได้', 'error'); }
   }
 
-  // 🌟 [Mission Hub] ฟังก์ชันแชร์ข่าวสารผ่าน LINE
+  // 🌟 [Mission Hub] ฟังก์ชันแชร์ข่าวสารผ่าน LINE (อัปเดตรองรับ GitHub & Flex Message สมบูรณ์)
   async function shareNewsMission() {
-    if (!liff.isApiAvailable('shareTargetPicker')) {
-      Swal.fire('ขออภัย', 'อุปกรณ์ของคุณไม่รองรับการแชร์ผ่าน LINE (โปรดเปิดในแอป LINE)', 'warning'); return;
+    // 1. ตรวจสอบการล็อกอิน (Security Check)
+    if (!liff.isLoggedIn()) {
+      Swal.fire('แจ้งเตือน', 'กรุณาเข้าสู่ระบบผ่าน LINE ก่อนแชร์ข่าวสาร', 'warning');
+      return liff.login();
     }
+    
+    // 2. ตรวจสอบการรองรับ API ของอุปกรณ์
+    if (!liff.isApiAvailable('shareTargetPicker')) {
+      Swal.fire('ขออภัย', 'อุปกรณ์ของคุณไม่รองรับการแชร์ (โปรดใช้งานผ่านแอปพลิเคชัน LINE บนมือถือ)', 'warning'); 
+      return;
+    }
+
     try {
+      // 🌟 โครงสร้าง Flex Message ที่สมบูรณ์แบบ (ดึงดูดสายตาและถูกต้องตามมาตรฐาน LINE 100%)
+      // 💡 อาแบสามารถนำลิงก์รูปภาพจาก GitHub (คลิกขวาที่รูปใน GitHub เลือก Copy Image Address) มาวางแทนลิงก์ด้านล่างนี้ได้เลยครับ (ต้องขึ้นต้นด้วย https://)
+      const bannerImageUrl = "https://images.unsplash.com/photo-1555421689-d68471e189f2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80";
+
       const res = await liff.shareTargetPicker([{
-        type: "flex", altText: "ข่าวสารกองทุนสวัสดิการชุมชน",
+        type: "flex",
+        altText: "ข่าวสารกองทุนสวัสดิการชุมชน",
         contents: {
           type: "bubble",
-          body: { type: "box", layout: "vertical", contents: [{ type: "text", text: "มาร่วมเป็นส่วนหนึ่งของกองทุนสวัสดิการชุมชนตำบลสุคิริน เพื่อคุณภาพชีวิตที่ดีของพวกเราทุกคน อ่านรายละเอียดได้ที่นี่!", wrap: true, weight: "bold", size: "sm", color: "#0A2540" }] },
-          footer: { type: "box", layout: "vertical", contents: [{ type: "button", action: { type: "uri", label: "เข้าสู่ระบบกองทุน", uri: `https://liff.line.me/${LIFF_ID}` }, style: "primary", color: "#3B82F6" }] }
+          hero: {
+            type: "image",
+            url: bannerImageUrl,
+            size: "full",
+            aspectRatio: "20:13",
+            aspectMode: "cover"
+          },
+          body: {
+            type: "box",
+            layout: "vertical",
+            contents: [
+              { type: "text", text: "กองทุนสวัสดิการชุมชน", weight: "bold", size: "sm", color: "#1D4ED8" },
+              { type: "text", text: "กองทุนเพื่อคุณภาพชีวิต", weight: "bold", size: "xl", margin: "md", wrap: true },
+              { type: "text", text: "ให้อย่างมีคุณค่า รับอย่างมีศักดิ์ศรี มาร่วมสร้างความมั่นคงและคุณภาพชีวิตที่ดีให้กับพวกเราทุกคน", wrap: true, color: "#64748B", size: "sm", margin: "md" }
+            ]
+          },
+          footer: {
+            type: "box",
+            layout: "vertical",
+            spacing: "sm",
+            contents: [
+              {
+                type: "button",
+                style: "primary",
+                height: "sm",
+                color: "#2563EB",
+                action: { type: "uri", label: "เข้าสู่ระบบ / สมัครสมาชิก", uri: `https://liff.line.me/${LIFF_ID}` }
+              }
+            ],
+            flex: 0
+          }
         }
       }]);
+      
+      // 3. กระบวนการแจกคะแนนหลังจากการแชร์สำเร็จ (res จะมีค่าเมื่อกดยืนยันการส่งให้เพื่อน)
       if (res) {
         Swal.fire({ title: 'กำลังประมวลผลคะแนน...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); }});
-        const earnRes = await fetch(GAS_API_URL, { method: 'POST', body: JSON.stringify({ action: 'earnPoints', uid: document.getElementById('uid').value, missionType: 'lineShare' }) }).then(r=>r.json());
+        
+        // ส่งคำสั่งไปที่หลังบ้าน (Code.gs) เพื่อบวกแต้มและอัปเดตวันที่
+        const earnRes = await fetch(GAS_API_URL, { 
+          method: 'POST', 
+          body: JSON.stringify({ 
+            action: 'earnPoints', 
+            uid: document.getElementById('uid').value, 
+            missionType: 'lineShare' 
+          }) 
+        }).then(r => r.json());
+        
         if(earnRes.status === 'success'){
+           // อัปเดตตัวเลขคะแนนบนหน้าจอทันที
            document.getElementById('dashCwfPoints').innerText = earnRes.newPoints;
+           
+           // 🌟 เช็คและอัปเดตยศ (Tier) สดๆ บนหน้าจอ หากคะแนนทะลุเพดาน
+           updateTierOnScreen(earnRes.newPoints); 
+           
            Swal.fire({ icon: 'success', title: 'แชร์สำเร็จ!', text: earnRes.message, confirmButtonColor: '#10B981' });
         } else {
            Swal.fire({ icon: 'info', title: 'แจ้งเตือน', text: earnRes.message });
         }
       }
-    } catch(e) { console.log(e); }
+    } catch(e) { 
+      console.error("Share Target Picker Error:", e);
+      // แกล้งเงียบ (Silent Fail) กรณีผู้ใช้อาจกดกากบาทปิดหน้าต่างเลือกเพื่อนไปเอง
+    }
+  }
+
+  // 🌟 ฟังก์ชันเสริม: อัปเดตยศ (National Standard Tiers) บนหน้าจอทันทีแบบ Real-time
+  function updateTierOnScreen(points) {
+      let tierName = "ร่วมใจ (Unity)"; let tierColor = "#64748B"; 
+      if (points >= 5000) { tierName = "เกียรติภูมิชุมชน (Legacy)"; tierColor = "#D97706"; }
+      else if (points >= 2500) { tierName = "ทรงคุณค่า (Precious)"; tierColor = "#1D4ED8"; }
+      else if (points >= 1000) { tierName = "ต้นแบบ (Role Model)"; tierColor = "#059669"; }
+      else if (points >= 600) { tierName = "อุทิศตน (Dedication)"; tierColor = "#7C3AED"; }
+      else if (points >= 300) { tierName = "แบ่งปัน (Sharing)"; tierColor = "#EA580C"; }
+      else if (points >= 100) { tierName = "เกื้อกูล (Solidarity)"; tierColor = "#0284C7"; }
+      
+      const tierBadge = document.getElementById('dashTierBadge');
+      if(tierBadge) {
+          tierBadge.innerHTML = `<i class="fa-solid fa-crown"></i> ระดับ: ${tierName}`;
+          tierBadge.style.backgroundColor = tierColor;
+          tierBadge.style.display = 'inline-flex';
+      }
   }
 </script>
 </body>
