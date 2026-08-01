@@ -163,9 +163,31 @@
     <div class="capsule-box capsule-cwf text-start mb-4">
       <div>
         <small class="opacity-90 d-block fw-bold">คะแนนสะสมอาสาสมัคร</small>
-        <h3 class="fw-bold mb-0 text-white"><span id="dashCwfPoints">0</span> <span style="font-size: 1.1rem; font-weight: normal;">แต้ม</span></h3>
+        <div class="d-flex align-items-center gap-2">
+            <h3 class="fw-bold mb-0 text-white"><span id="dashCwfPoints">0</span> <span style="font-size: 1.1rem; font-weight: normal;">แต้ม</span></h3>
+        </div>
       </div>
       <a href="#" onclick="shareRefLink()" class="btn-inside-capsule text-warning bg-light border-0"><i class="fa-solid fa-share-nodes me-1"></i> ชวนเพื่อน</a>
+    </div>
+
+    <!-- 🎮 ศูนย์ภารกิจ (Mission Hub) ที่เพิ่มเข้ามาใหม่! -->
+    <div class="p-4 rounded-4 mb-4 text-start" style="background: linear-gradient(135deg, #F0F9FF, #DBEAFE); border: 1px solid #BFDBFE;">
+      <div class="d-flex align-items-center mb-3">
+        <i class="fa-solid fa-gamepad text-primary fs-4 me-2"></i>
+        <h6 class="fw-bold text-primary mb-0 m-0">ศูนย์ภารกิจรับคะแนน (Mission Hub)</h6>
+      </div>
+      <div class="row g-2">
+        <div class="col-6">
+          <button onclick="dailyCheckIn()" class="btn btn-white w-100 rounded-4 py-3 shadow-sm fw-bold border" style="color:#059669; background: white;">
+            <i class="fa-solid fa-calendar-check d-block fs-3 mb-1 text-success"></i> เช็คอินรายวัน
+          </button>
+        </div>
+        <div class="col-6">
+          <button onclick="shareNewsMission()" class="btn btn-white w-100 rounded-4 py-3 shadow-sm fw-bold border" style="color:#2563EB; background: white;">
+            <i class="fa-brands fa-line d-block fs-3 mb-1 text-primary"></i> แชร์ข่าวสาร
+          </button>
+        </div>
+      </div>
     </div>
 
     <!-- 💰 แคปซูลที่ 2: สมทบเงินสะสม -->
@@ -174,6 +196,7 @@
         <small class="opacity-90 d-block fw-bold">ยอดสมทบสะสม</small>
         <h3 class="fw-bold mb-0 text-white"><span id="dashTotalContrib">0</span> <span style="font-size: 1.1rem; font-weight: normal;">฿</span></h3>
       </div>
+      <!-- เปลี่ยน LIFF ID ตรงนี้ให้เป็นหน้าสมทบเงินของคุณ -->
       <a href="https://liff.line.me/2010764982-BltKP85l" class="btn-inside-capsule"><i class="fa-solid fa-coins me-1"></i> สมทบเงิน</a>
     </div>
     <div class="outstanding-text"><i class="fa-solid fa-circle-exclamation me-1"></i> ยอดค้างสมทบ: <span id="dashOutstanding" class="fw-bold fs-5">0</span> บาท</div>
@@ -184,6 +207,7 @@
         <small class="opacity-90 d-block fw-bold">รับสวัสดิการรวม</small>
         <h3 class="fw-bold mb-0 text-white"><span id="dashTotalWelfare">0</span> <span style="font-size: 1.1rem; font-weight: normal;">฿</span></h3>
       </div>
+      <!-- เปลี่ยน LIFF ID ตรงนี้ให้เป็นหน้าขอสวัสดิการของคุณ -->
       <a href="https://liff.line.me/2010764982-opxguAid" class="btn-inside-capsule"><i class="fa-solid fa-hand-holding-heart me-1"></i> ขอรับสวัสดิการ</a>
     </div>
     
@@ -531,6 +555,47 @@
     if (liff.isInClient() && liff.isApiAvailable('shareTargetPicker')) {
       liff.shareTargetPicker([{ type: "flex", altText: "ชวนเพื่อน", contents: { type: "bubble", body: { type: "box", layout: "vertical", contents: [{ type: "text", text: "สมัครกองทุนสวัสดิการชุมชนคลิก!", weight: "bold", size: "md", color: "#0A2540" }] }, footer: { type: "box", layout: "vertical", contents: [{ type: "button", action: { type: "uri", label: "สมัครสมาชิก", uri: url }, style: "primary", color: "#3B82F6" }] } } }]);
     } else { navigator.clipboard.writeText(url); Swal.fire('คัดลอกลิงก์สำเร็จ', 'นำลิงก์ไปส่งให้เพื่อนในแชทได้เลย', 'success'); }
+  }
+
+  // 🌟 [Mission Hub] ฟังก์ชันเช็คอินรายวัน
+  async function dailyCheckIn() {
+    Swal.fire({ title: 'กำลังเช็คอิน...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); }});
+    try {
+      const res = await fetch(GAS_API_URL, { method: 'POST', body: JSON.stringify({ action: 'earnPoints', uid: document.getElementById('uid').value, missionType: 'dailyLogin' }) }).then(r=>r.json());
+      if (res.status === 'success') {
+        document.getElementById('dashCwfPoints').innerText = res.newPoints;
+        Swal.fire({ icon: 'success', title: 'เยี่ยมมาก!', text: res.message, confirmButtonColor: '#10B981' });
+      } else {
+        Swal.fire({ icon: 'info', title: 'แจ้งเตือน', text: res.message });
+      }
+    } catch (e) { Swal.fire('Error', 'ไม่สามารถประมวลผลได้', 'error'); }
+  }
+
+  // 🌟 [Mission Hub] ฟังก์ชันแชร์ข่าวสารผ่าน LINE
+  async function shareNewsMission() {
+    if (!liff.isApiAvailable('shareTargetPicker')) {
+      Swal.fire('ขออภัย', 'อุปกรณ์ของคุณไม่รองรับการแชร์ผ่าน LINE (โปรดเปิดในแอป LINE)', 'warning'); return;
+    }
+    try {
+      const res = await liff.shareTargetPicker([{
+        type: "flex", altText: "ข่าวสารกองทุนสวัสดิการชุมชน",
+        contents: {
+          type: "bubble",
+          body: { type: "box", layout: "vertical", contents: [{ type: "text", text: "มาร่วมเป็นส่วนหนึ่งของกองทุนสวัสดิการชุมชนตำบลสุคิริน เพื่อคุณภาพชีวิตที่ดีของพวกเราทุกคน อ่านรายละเอียดได้ที่นี่!", wrap: true, weight: "bold", size: "sm", color: "#0A2540" }] },
+          footer: { type: "box", layout: "vertical", contents: [{ type: "button", action: { type: "uri", label: "เข้าสู่ระบบกองทุน", uri: `https://liff.line.me/${LIFF_ID}` }, style: "primary", color: "#3B82F6" }] }
+        }
+      }]);
+      if (res) {
+        Swal.fire({ title: 'กำลังประมวลผลคะแนน...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); }});
+        const earnRes = await fetch(GAS_API_URL, { method: 'POST', body: JSON.stringify({ action: 'earnPoints', uid: document.getElementById('uid').value, missionType: 'lineShare' }) }).then(r=>r.json());
+        if(earnRes.status === 'success'){
+           document.getElementById('dashCwfPoints').innerText = earnRes.newPoints;
+           Swal.fire({ icon: 'success', title: 'แชร์สำเร็จ!', text: earnRes.message, confirmButtonColor: '#10B981' });
+        } else {
+           Swal.fire({ icon: 'info', title: 'แจ้งเตือน', text: earnRes.message });
+        }
+      }
+    } catch(e) { console.log(e); }
   }
 </script>
 </body>
