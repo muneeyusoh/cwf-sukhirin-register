@@ -17,29 +17,29 @@
     :root { --fintech-primary: #0A2540; --fintech-accent: #3B82F6; --fintech-success: #10B981; --bg-light: #F8FAFC; }
     body { background-color: var(--bg-light); font-family: 'Prompt', sans-serif; color: #1E293B; }
     
-    /* 📱 Header & Card Setup (ปรับระยะไม่ให้ทับตัวหนังสือ) */
+    /* 📱 Header & Card Setup */
     .app-header { background: linear-gradient(135deg, var(--fintech-primary), #1e3a8a); color: white; padding: 45px 20px 85px; text-align: center; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; box-shadow: 0 4px 15px rgba(10, 37, 64, 0.2); }
     .card-box { background: white; padding: 25px; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.06); max-width: 600px; margin: -55px auto 30px; position: relative; border: 1px solid #E2E8F0; }
     .profile-img { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 4px solid white; margin-top: -70px; background: white; box-shadow: 0 4px 15px rgba(0,0,0,0.15); }
     
-    /* 🌟 Status Badge */
+    /* 🌟 Status & Tier Badge */
     .badge-status { padding: 8px 24px; border-radius: 30px; font-size: 0.9rem; font-weight: 700; box-shadow: 0 4px 6px rgba(0,0,0,0.05); display: inline-block; margin-bottom: 24px; }
     .status-pending { background-color: #FFC107; color: #1F2937; } 
     .status-active { background-color: #10B981; color: #FFFFFF; } 
     .status-inactive { background-color: #EF4444; color: #FFFFFF; } 
+    .badge-tier { padding: 4px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; color: white; display: inline-flex; align-items: center; gap: 6px; margin-top: 8px; margin-bottom: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border: 1px solid rgba(255,255,255,0.2); }
     
-    /* 💊 Modern Action Capsules (แท่งแคปซูลการเงินอัจฉริยะ) */
+    /* 💊 Modern Action Capsules */
     .capsule-box { border-radius: 18px; padding: 20px 24px; color: white; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; box-shadow: 0 8px 15px -3px rgba(0,0,0,0.15); }
     .capsule-cwf { background: linear-gradient(135deg, #F59E0B, #EA580C); }
     .capsule-contrib { background: linear-gradient(135deg, #10B981, #059669); }
     .capsule-welfare { background: linear-gradient(135deg, #3B82F6, #1D4ED8); }
-    
     .btn-inside-capsule { background: rgba(255,255,255,0.25); border: 1px solid rgba(255,255,255,0.4); color: white; border-radius: 20px; padding: 10px 18px; font-size: 0.9rem; font-weight: 700; text-decoration: none; backdrop-filter: blur(5px); transition: 0.2s; white-space: nowrap; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
     .btn-inside-capsule:active { transform: scale(0.95); background: rgba(255,255,255,0.4); color: white; }
     
     .outstanding-text { font-size: 0.85rem; font-weight: 600; color: #EF4444; text-align: left; margin-bottom: 20px; padding-left: 10px; }
 
-    /* 📋 Member Info Section (Digital ID Card) */
+    /* 📋 Member Info Section */
     .info-list { background: #F8FAFC; border-radius: 16px; padding: 16px; border: 1px solid #E2E8F0; margin-bottom: 20px; text-align: left;}
     .info-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px dashed #CBD5E1; }
     .info-row:last-child { border-bottom: none; padding-bottom: 0; }
@@ -52,6 +52,9 @@
     .form-control:focus, .form-select:focus { background-color: #FFFFFF; border-color: var(--fintech-accent); box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15); }
     .form-control:read-only { background-color: #E2E8F0; color: #64748B; cursor: not-allowed; }
     .btn-fintech { background-color: var(--fintech-primary); color: white; border-radius: 12px; padding: 14px; font-weight: 600; font-size: 1.05rem; border: none; transition: 0.3s; box-shadow: 0 4px 10px rgba(10,37,64,0.3); }
+    
+    /* 🌟 PDPA & GIS Box Style */
+    .pdpa-box { background: #F1F5F9; border: 1px solid #CBD5E1; border-radius: 12px; padding: 16px; font-size: 0.85rem; text-align: left; }
     
     #systemLoading { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.95); z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
   </style>
@@ -70,13 +73,17 @@
 
 <div class="container mb-5">
   
-  <!-- 📝 Register View (สมัครครั้งแรก - ระบบพิมพ์ลื่นไหล 100%) -->
+  <!-- 📝 Register View -->
   <div id="registerView" class="card-box" style="display: none;">
     <h5 class="mb-4 text-center fw-bold text-dark"><i class="fa-solid fa-user-plus me-2 text-primary"></i>ลงทะเบียนสมาชิกใหม่</h5>
     <form id="registerForm" onsubmit="handleRegister(event)">
       <input type="hidden" name="action" value="register"> 
       <input type="hidden" id="uid" name="uid">
       <input type="hidden" id="refCode" name="refCode"> 
+      
+      <!-- 🌟 ซ่อน Input สำหรับเก็บพิกัด GIS อัตโนมัติ -->
+      <input type="hidden" id="regLatitude" name="latitude">
+      <input type="hidden" id="regLongitude" name="longitude">
 
       <div class="row g-2 mb-3">
         <div class="col-4">
@@ -97,7 +104,7 @@
         <label class="small text-muted fw-bold mb-1">เบอร์โทรศัพท์ติดต่อ</label>
         <input type="tel" class="form-control" name="phone" placeholder="08XXXXXXXX" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);" required>
       </div>
-      <div class="mb-4">
+      <div class="mb-3">
         <select class="form-select fw-bold text-dark" name="center" required>
           <option value="" disabled selected>-- เลือกศูนย์ประสานงานใกล้บ้าน --</option>
           <option value="ศูนย์ชุมชนปารีย์">ศูนย์ชุมชนปารีย์</option>
@@ -108,17 +115,48 @@
           <option value="ศูนย์ชุมชนสุคิริน">ศูนย์ชุมชนสุคิริน</option>
         </select>
       </div>
+      
+      <!-- 🌟 เพิ่ม Dropdown หมู่บ้าน/ชุมชน -->
+      <div class="mb-4">
+        <select class="form-select text-dark" name="village" required>
+          <option value="" disabled selected>-- เลือกหมู่บ้านที่พักอาศัยปัจจุบัน --</option>
+          <option value="บ้านจารังตาดง">บ้านจารังตาดง</option>
+          <option value="บ้านมาโมง">บ้านมาโมง</option>
+          <option value="บ้านภูเขาทอง">บ้านภูเขาทอง</option>
+          <option value="บ้านปารีย์">บ้านปารีย์</option>
+          <option value="บ้านเกียร์">บ้านเกียร์</option>
+          <option value="บ้านราษฎร์สามัคคี">บ้านราษฎร์สามัคคี</option>
+          <option value="บ้านกลันตัน">บ้านกลันตัน</option>
+          <option value="บ้านสุคิริน">บ้านสุคิริน</option>
+          <option value="อื่นๆ">อื่นๆ</option>
+        </select>
+      </div>
+
+      <!-- 🌟 กล่องนโยบาย PDPA และ ยินยอมเก็บพิกัด GIS -->
+      <div class="pdpa-box mb-4">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" name="pdpaConsent" id="pdpaCheck" value="true" required>
+          <label class="form-check-label text-muted" for="pdpaCheck">
+            <strong>นโยบายความเป็นส่วนตัว (PDPA)</strong><br>
+            ข้าพเจ้ายินยอมให้กองทุนฯ จัดเก็บและประมวลผลข้อมูลส่วนบุคคล <u>รวมถึงพิกัดภูมิศาสตร์ (GPS)</u> เพื่อการพิจารณาสิทธิประโยชน์ด้านสวัสดิการชุมชน
+          </label>
+        </div>
+      </div>
+
       <button type="submit" class="btn btn-fintech w-100 py-3 rounded-3" id="submitRegBtn"><i class="fa-solid fa-check-circle me-2"></i> สมัครสมาชิก</button>
     </form>
   </div>
 
-  <!-- 📊 Dashboard View (หน้าจอหลักโฉมใหม่ แคปซูลอัจฉริยะ) -->
+  <!-- 📊 Dashboard View -->
   <div id="dashboardView" class="card-box text-center" style="display: none;">
     <img id="userAvatar" src="" class="profile-img" alt="Profile">
     <h4 id="dashName" class="fw-bold mt-2 mb-0 text-dark"></h4>
+    
+    <!-- 🌟 Tier Badge จาก Backend -->
+    <div id="dashTierBadge" class="badge-tier" style="display: none;"></div>
+
     <p class="text-muted small mb-2"><i class="fa-solid fa-location-dot me-1 text-danger"></i><span id="dashCenterText"></span></p>
     
-    <!-- 🌟 Status Badge -->
     <div id="dashStatusBadge" class="badge-status">รอตรวจสอบ</div>
     
     <!-- 🎁 แคปซูลที่ 1: CWF Points -->
@@ -138,7 +176,6 @@
       </div>
       <a href="https://liff.line.me/2010764982-BltKP85l" class="btn-inside-capsule"><i class="fa-solid fa-coins me-1"></i> สมทบเงิน</a>
     </div>
-    <!-- แจ้งเตือนยอดค้างชำระ -->
     <div class="outstanding-text"><i class="fa-solid fa-circle-exclamation me-1"></i> ยอดค้างสมทบ: <span id="dashOutstanding" class="fw-bold fs-5">0</span> บาท</div>
 
     <!-- 🏥 แคปซูลที่ 3: รับสวัสดิการรวม -->
@@ -151,10 +188,8 @@
     </div>
     
     <div class="text-start border-top pt-4">
-      <!-- 📋 ข้อมูลส่วนตัว (Digital ID Card) -->
       <div class="d-flex justify-content-between align-items-center mb-3">
         <div class="section-title m-0"><i class="fa-solid fa-id-card text-primary me-2"></i> ข้อมูลระบบและส่วนตัว</div>
-        <!-- 🛠️ ปุ่มแก้ไขย่อส่วน -->
         <button onclick="openProfileEditor()" class="btn btn-sm btn-outline-primary rounded-pill px-3 py-1 fw-bold"><i class="fa-solid fa-pen me-1"></i> แก้ไข</button>
       </div>
       
@@ -171,7 +206,7 @@
     </div>
   </div>
 
-  <!-- ✏️ Edit Profile View (ระบบจัดการตัวเองเต็มรูปแบบ) -->
+  <!-- ✏️ Edit Profile View -->
   <div id="editProfileView" class="card-box" style="display: none;">
     <div class="d-flex align-items-center mb-4 pb-3 border-bottom">
       <button onclick="closeProfileEditor()" class="btn btn-light rounded-circle me-3 border"><i class="fa-solid fa-arrow-left"></i></button>
@@ -200,12 +235,29 @@
       <div class="mb-4"><label class="small text-muted fw-bold">วันเดือนปีเกิด</label><input type="date" id="editBirth" name="birthDate" class="form-control"></div>
 
       <!-- 📱 การติดต่อและพื้นที่ -->
-      <div class="section-title"><i class="fa-solid fa-address-book me-2"></i>การติดต่อและที่อยู่</div>
+      <div class="section-title"><i class="fa-solid fa-map-location-dot me-2"></i>การติดต่อและที่อยู่</div>
       <div class="row g-2 mb-3">
         <div class="col-6"><label class="small text-muted fw-bold">เบอร์โทรศัพท์</label><input type="tel" id="editPhone" name="phone" class="form-control" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);"></div>
         <div class="col-6"><label class="small text-muted fw-bold">อีเมล (ถ้ามี)</label><input type="email" id="editEmail" name="email" class="form-control"></div>
       </div>
-      <div class="mb-3"><label class="small text-muted fw-bold">สังกัดศูนย์</label>
+      
+      <!-- 🌟 เพิ่ม Dropdown หมู่บ้านในหน้าแก้ไข -->
+      <div class="mb-3"><label class="small text-muted fw-bold">หมู่บ้าน/ชุมชน</label>
+        <select id="editVillage" name="village" class="form-select">
+          <option value="" disabled>-- เลือกหมู่บ้าน --</option>
+          <option value="บ้านจารังตาดง">บ้านจารังตาดง</option>
+          <option value="บ้านมาโมง">บ้านมาโมง</option>
+          <option value="บ้านภูเขาทอง">บ้านภูเขาทอง</option>
+          <option value="บ้านปารีย์">บ้านปารีย์</option>
+          <option value="บ้านเกียร์">บ้านเกียร์</option>
+          <option value="บ้านราษฎร์สามัคคี">บ้านราษฎร์สามัคคี</option>
+          <option value="บ้านกลันตัน">บ้านกลันตัน</option>
+          <option value="บ้านสุคิริน">บ้านสุคิริน</option>
+          <option value="อื่นๆ">อื่นๆ</option>
+        </select>
+      </div>
+
+      <div class="mb-3"><label class="small text-muted fw-bold">สังกัดศูนย์ประสานงาน</label>
         <select id="editCenter" name="center" class="form-select">
           <option value="ศูนย์ชุมชนปารีย์">ศูนย์ชุมชนปารีย์</option>
           <option value="ศูนย์ชุมชนเกียร์">ศูนย์ชุมชนเกียร์</option>
@@ -215,7 +267,18 @@
           <option value="ศูนย์ชุมชนสุคิริน">ศูนย์ชุมชนสุคิริน</option>
         </select>
       </div>
-      <div class="mb-4"><label class="small text-muted fw-bold">ที่อยู่ปัจจุบัน (สำหรับทำ GIS)</label><textarea id="editAddress" name="address" class="form-control" rows="2"></textarea></div>
+      <div class="mb-3"><label class="small text-muted fw-bold">ที่อยู่ปัจจุบันบ้านเลขที่ (เช่น 123/4 ม.1)</label><textarea id="editAddress" name="address" class="form-control" rows="2"></textarea></div>
+
+      <!-- 🌟 กล่องอัปเดต GIS Location อัจฉริยะ สำหรับบ้านเก่าที่ยังไม่มีพิกัด -->
+      <div class="mb-4 p-3 bg-light rounded-4 border text-start">
+        <label class="small text-muted fw-bold mb-2"><i class="fa-solid fa-location-crosshairs text-danger me-1"></i> พิกัดหลังคาเรือน (GIS Location)</label>
+        <div class="d-flex gap-2">
+            <input type="text" id="editLatitude" name="latitude" class="form-control form-control-sm text-center bg-white fw-bold" placeholder="ยังไม่มีละติจูด" readonly>
+            <input type="text" id="editLongitude" name="longitude" class="form-control form-control-sm text-center bg-white fw-bold" placeholder="ยังไม่มีลองจิจูด" readonly>
+            <button type="button" class="btn btn-sm btn-outline-danger shadow-sm px-3" onclick="updateEditLocation(event)"><i class="fa-solid fa-map-pin"></i> ปักหมุด</button>
+        </div>
+        <small class="text-danger mt-2 d-block" style="font-size: 0.75rem;">* กรุณากดปุ่ม <b>ปักหมุด</b> เมื่อท่านอยู่ ณ บ้านพักอาศัยจริง เพื่อให้ข้อมูลทางภูมิศาสตร์ถูกต้อง</small>
+      </div>
 
       <!-- 💰 ข้อมูลเศรษฐกิจและสังคม -->
       <div class="section-title"><i class="fa-solid fa-briefcase me-2"></i>ข้อมูลเศรษฐกิจและสังคม</div>
@@ -258,6 +321,53 @@
   
   let cachedUserData = null;
 
+  // 🌟 ฟังก์ชันดึงพิกัด GPS อัตโนมัติ (Geolocation API) สำหรับหน้าลงทะเบียนใหม่
+  function requestLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          document.getElementById('regLatitude').value = position.coords.latitude;
+          document.getElementById('regLongitude').value = position.coords.longitude;
+        },
+        (error) => { console.warn("GPS Error / User Denied:", error); }
+      );
+    }
+  }
+
+  // 🌟 ฟังก์ชันดึงพิกัด GPS สำหรับหน้าอัปเดตโปรไฟล์ (มี Interaction กับผู้ใช้)
+  function updateEditLocation(event) {
+    const btn = event.currentTarget;
+    const originalHtml = btn.innerHTML;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> รอสักครู่...';
+    btn.disabled = true;
+    
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          document.getElementById('editLatitude').value = position.coords.latitude;
+          document.getElementById('editLongitude').value = position.coords.longitude;
+          btn.innerHTML = '<i class="fa-solid fa-check"></i> ดึงพิกัดสำเร็จ';
+          btn.classList.replace('btn-outline-danger', 'btn-success');
+          
+          setTimeout(() => { 
+              btn.innerHTML = originalHtml; 
+              btn.disabled = false;
+              btn.classList.replace('btn-success', 'btn-outline-danger');
+          }, 3000);
+        },
+        (error) => { 
+          Swal.fire('ดึงพิกัดไม่สำเร็จ', 'โปรดตรวจสอบว่าเปิด GPS (Location Service) ในโทรศัพท์ของคุณแล้วหรือยัง', 'warning');
+          btn.innerHTML = originalHtml; 
+          btn.disabled = false;
+        },
+        { enableHighAccuracy: true, timeout: 10000 }
+      );
+    } else {
+      Swal.fire('ข้อผิดพลาด', 'เบราว์เซอร์หรืออุปกรณ์ของคุณไม่รองรับการดึงพิกัด GPS', 'error');
+      btn.innerHTML = originalHtml; btn.disabled = false;
+    }
+  }
+
   document.addEventListener("DOMContentLoaded", async () => {
     try {
       await liff.init({ liffId: LIFF_ID });
@@ -270,7 +380,9 @@
         document.getElementById('editUid').value = profile.userId;
         await checkMemberOnCloud(profile.userId, profile.pictureUrl || "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/icons/person-circle.svg");
       } else { liff.login(); }
-    } catch (err) { document.getElementById('systemLoading').innerHTML = `<div class="text-danger text-center px-4"><h6>System Error</h6><p class="small">${err.message}</p></div>`; }
+    } catch (err) { 
+        document.getElementById('systemLoading').innerHTML = `<div class="text-danger text-center px-4"><h6>System Error</h6><p class="small">${err.message}</p></div>`; 
+    }
   });
 
   async function checkMemberOnCloud(uid, pictureUrl) {
@@ -286,6 +398,15 @@
         // 📊 Render Dashboard
         document.getElementById('userAvatar').src = pictureUrl;
         document.getElementById('dashName').innerText = (data.prefix || "") + " " + data.fullName;
+        
+        // 🌟 นำข้อมูล Tier ที่ส่งมาจาก Backend มาแสดงผลแบบ Dynamic UI
+        const tierBadge = document.getElementById('dashTierBadge');
+        if (data.tierName && data.tierColor) {
+          tierBadge.innerHTML = `<i class="fa-solid fa-crown"></i> ระดับ: ${data.tierName}`;
+          tierBadge.style.backgroundColor = data.tierColor;
+          tierBadge.style.display = 'inline-flex';
+        }
+
         document.getElementById('dashCenterText').innerText = " " + (data.center || "CWF Member");
         document.getElementById('dashCwfPoints').innerText = data.cwfPoints || 0;
         
@@ -307,20 +428,16 @@
         // 📋 Info List 
         document.getElementById('dashMemberId').innerText = data.memberId || "-";
         
-        // 🔒 Format บัตรประชาชนแบบ PDPA (19609XXXX6862)
         let nId = String(data.nationalId || "").replace(/\D/g, '');
         document.getElementById('dashNatId').innerText = nId.length === 13 ? `${nId.substring(0,5)}XXXX${nId.substring(9,13)}` : "-";
         
-        // Format เบอร์โทรศัพท์
         let pId = String(data.phone || "").replace(/\D/g, '');
         document.getElementById('dashPhone').innerText = pId.length === 10 ? `${pId.substring(0,3)}-${pId.substring(3,6)}-${pId.substring(6,10)}` : "-";
         
-        // ⏳ การคำนวณอายุสมาชิกแบบละเอียดและแม่นยำ 100% (X ปี Y เดือน Z วัน)
         let ageStr = "รอชำระเงินงวดแรก";
         if (data.timestamp && data.timestamp !== "-") {
-          const parts = data.timestamp.split('/'); // คาดหวัง Format DD/MM/YYYY
+          const parts = data.timestamp.split('/'); 
           if (parts.length === 3) {
-            // สร้าง Date Object ของวันที่สมัคร และ วันที่ปัจจุบัน
             const regDate = new Date(parts[2], parts[1] - 1, parts[0]);
             const today = new Date();
             
@@ -328,28 +445,21 @@
             let months = today.getMonth() - regDate.getMonth();
             let days = today.getDate() - regDate.getDate();
 
-            // ตรรกะการคำนวณปฏิทิน: ถ้ายอดวันติดลบ ให้ยืมเดือนก่อนหน้ามา 1 เดือน
             if (days < 0) {
               months--;
-              // หาจำนวนวันของเดือนที่แล้ว
               const prevMonth = new Date(today.getFullYear(), today.getMonth(), 0);
               days += prevMonth.getDate();
             }
-            
-            // ตรรกะการคำนวณปฏิทิน: ถ้ายอดเดือนติดลบ ให้ยืมปีมา 1 ปี (12 เดือน)
             if (months < 0) {
               years--;
               months += 12;
             }
-
-            // จัดรูปแบบการแสดงผลให้เป็น "X ปี Y เดือน Z วัน"
             ageStr = `${years} ปี ${months} เดือน ${days} วัน`;
           }
         }
         document.getElementById('dashAgeYears').innerText = ageStr;
         document.getElementById('dashDate').innerText = data.timestamp || "-";
 
-        // Welfare History
         const historyList = document.getElementById('dashWelfareList');
         historyList.innerHTML = "";
         if((data.welfareHistory || []).length === 0) {
@@ -358,13 +468,18 @@
           data.welfareHistory.forEach(item => { historyList.innerHTML += `<div class="list-group-item d-flex justify-content-between align-items-center py-3 border-0 border-bottom"><span class="text-dark fw-bold">${item.type}</span><span class="badge ${item.status.includes('อนุมัติ') ? 'bg-success' : 'bg-warning text-dark'} rounded-pill px-3 py-1 shadow-sm">${item.status}</span></div>`; });
         }
         document.getElementById('dashboardView').style.display = 'block';
-      } else { document.getElementById('registerView').style.display = 'block'; }
-    } catch (e) { document.getElementById('systemLoading').style.display = 'none'; document.getElementById('registerView').style.display = 'block'; }
+      } else { 
+        // 🌟 กรณีเป็นสมาชิกใหม่ ให้ดึงพิกัดพิกัดทันทีแบบเงียบๆ
+        document.getElementById('registerView').style.display = 'block'; 
+        requestLocation();
+      }
+    } catch (e) { 
+        document.getElementById('systemLoading').style.display = 'none'; 
+        document.getElementById('registerView').style.display = 'block'; 
+        requestLocation(); 
+    }
   }
 
-  // ---------------------------------------------------
-  // 🔄 Profile Editor Navigation (เชื่อมต่อ Data Mapping)
-  // ---------------------------------------------------
   function openProfileEditor() {
     if(!cachedUserData) return; const d = cachedUserData;
     document.getElementById('editMemId').value = d.memberId;
@@ -372,9 +487,14 @@
     
     if(d.prefix) document.getElementById('editPrefix').value = d.prefix; document.getElementById('editName').value = d.fullName; document.getElementById('editBirth').value = d.birthDate; document.getElementById('editPhone').value = d.phone.replace(/\D/g, '');
     document.getElementById('editEmail').value = d.email; if(d.center !== "-") document.getElementById('editCenter').value = d.center; if(d.address !== "-") document.getElementById('editAddress').value = d.address;
+    
+    // 🌟 ดึงข้อมูลหมู่บ้านลงไปใน Form Edit Profile
+    if(d.village && document.getElementById('editVillage').querySelector(`option[value="${d.village}"]`)) { 
+        document.getElementById('editVillage').value = d.village; 
+    }
+
     if(d.education) document.getElementById('editEdu').value = d.education; if(d.occupation) document.getElementById('editOcc').value = d.occupation; document.getElementById('editInc').value = d.income; document.getElementById('editFam').value = d.familyMembers; document.getElementById('editDis').value = d.disabledPersons; if(d.houseType) document.getElementById('editHouseT').value = d.houseType; if(d.houseCondition) document.getElementById('editHouseC').value = d.houseCondition;
     
-    // แมปข้อมูลทายาทให้ตรงกับ name attribute ใน HTML
     document.getElementById('editBen1N').value = d.beneficiary1_name || ""; document.getElementById('editBen1R').value = d.beneficiary1_relation || ""; 
     document.getElementById('editBen2N').value = d.beneficiary2_name || ""; document.getElementById('editBen2R').value = d.beneficiary2_relation || ""; 
     document.getElementById('editBen3N').value = d.beneficiary3_name || ""; document.getElementById('editBen3R').value = d.beneficiary3_relation || "";
@@ -383,9 +503,6 @@
   }
   function closeProfileEditor() { document.getElementById('editProfileView').style.display = 'none'; document.getElementById('dashboardView').style.display = 'block'; window.scrollTo(0,0); }
 
-  // ---------------------------------------------------
-  // 📤 DATA SUBMISSION
-  // ---------------------------------------------------
   async function handleRegister(e) {
     e.preventDefault(); const btn = document.getElementById('submitRegBtn'); btn.disabled = true; btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>กำลังบันทึก...';
     const payload = Object.fromEntries(new FormData(e.target).entries()); 
