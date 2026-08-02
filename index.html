@@ -34,7 +34,6 @@
       box-shadow: 0 10px 40px rgba(0,0,0,0.04); max-width: 500px; 
       margin: -60px auto 30px; position: relative; border: 1px solid var(--card-border); 
     }
-    .profile-wrapper { position: relative; margin-top: -65px; text-align: center; margin-bottom: 15px; }
     .profile-img { 
       width: 100px; height: 100px; border-radius: 50%; object-fit: cover; 
       border: 4px solid white; background: white; box-shadow: 0 8px 16px rgba(0,0,0,0.1); 
@@ -52,14 +51,14 @@
     .badge-tier { 
       padding: 5px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; 
       color: white; display: inline-flex; align-items: center; gap: 6px; 
-      margin-top: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
     }
     
     /* 💳 Clean FinTech Stat Cards */
     .stat-card {
-      background: white; border-radius: 16px; padding: 18px 20px; 
+      background: white; border-radius: 16px; padding: 16px 20px; 
       display: flex; align-items: center; justify-content: space-between; 
-      margin-bottom: 12px; border: 1px solid var(--card-border); 
+      border: 1px solid var(--card-border); 
       transition: transform 0.2s, box-shadow 0.2s;
     }
     .stat-card:active { transform: scale(0.98); background: #F9FAFB; }
@@ -198,59 +197,64 @@
 
   <!-- 📊 Dashboard View -->
   <div id="dashboardView" class="card-box text-center" style="display: none;">
-    <div class="profile-wrapper">
-      <img id="userAvatar" src="" class="profile-img" alt="Profile">
+    
+    <!-- 🌟 โซนโปรไฟล์ (รูปภาพ + ยศขนาดเล็ก) -->
+    <div class="d-flex justify-content-center">
+      <div style="position: relative; margin-top: -65px; margin-bottom: 15px; display: inline-block;">
+        <img id="userAvatar" src="" class="profile-img m-0" alt="Profile">
+        <div id="dashTierBadge" class="badge-tier position-absolute" style="display: none; bottom: 0px; right: -25px; font-size: 0.65rem; padding: 2px 10px; border: 2px solid white; z-index: 2;"></div>
+      </div>
     </div>
     
     <div id="dashStatusBadge" class="badge-status">รอตรวจสอบ</div>
     <h4 id="dashName" class="fw-bold mb-0 text-dark"></h4>
     <p class="text-muted small mb-2"><i class="fa-solid fa-location-dot me-1"></i><span id="dashCenterText"></span></p>
-    
-    <div id="dashTierBadge" class="badge-tier" style="display: none;"></div>
 
     <hr class="my-4" style="border-color: #E5E7EB;">
     
-    <!-- 🎁 Stat Card 1: CWF Points -->
-    <div class="stat-card text-start">
-      <div class="d-flex align-items-center gap-3">
-        <div class="icon-box icon-points"><i class="fa-solid fa-star"></i></div>
-        <div>
-          <small class="text-muted fw-bold d-block lh-1 mb-1">คะแนนอาสาสมัคร</small>
-          <h4 class="fw-bold mb-0 text-dark"><span id="dashCwfPoints">0</span> <small class="fs-6 fw-normal text-muted">แต้ม</small></h4>
+    <!-- 🌟 โซนแคปซูลข้อมูล (จัดชิดกัน และรวมยอดค้างสมทบ) -->
+    <div class="d-flex flex-column gap-2 mb-4">
+      
+      <!-- 🎁 Stat Card 1: CWF Points -->
+      <div class="stat-card text-start m-0">
+        <div class="d-flex align-items-center gap-3">
+          <div class="icon-box icon-points"><i class="fa-solid fa-star"></i></div>
+          <div>
+            <small class="text-muted fw-bold d-block lh-1 mb-1">คะแนนอาสาสมัคร</small>
+            <h4 class="fw-bold mb-0 text-dark"><span id="dashCwfPoints">0</span> <small class="fs-6 fw-normal text-muted">แต้ม</small></h4>
+          </div>
         </div>
+        <button onclick="shareRefLink()" class="btn-action-sm"><i class="fa-solid fa-share-nodes"></i> ชวนเพื่อน</button>
       </div>
-      <button onclick="shareRefLink()" class="btn-action-sm"><i class="fa-solid fa-share-nodes"></i> ชวนเพื่อน</button>
-    </div>
 
-    <!-- 💰 Stat Card 2: Contributions -->
-    <div class="stat-card text-start position-relative">
-      <div class="d-flex align-items-center gap-3">
-        <div class="icon-box icon-contrib"><i class="fa-solid fa-piggy-bank"></i></div>
-        <div>
-          <small class="text-muted fw-bold d-block lh-1 mb-1">ยอดสมทบสะสม</small>
-          <h4 class="fw-bold mb-0 text-dark"><span id="dashTotalContrib">0</span> <small class="fs-6 fw-normal text-muted">฿</small></h4>
+      <!-- 💰 Stat Card 2: Contributions + Outstanding -->
+      <div class="stat-card text-start m-0 position-relative">
+        <div class="d-flex align-items-center gap-3">
+          <div class="icon-box icon-contrib"><i class="fa-solid fa-piggy-bank"></i></div>
+          <div>
+            <small class="text-muted fw-bold d-block lh-1 mb-1">ยอดสมทบสะสม</small>
+            <h4 class="fw-bold mb-0 text-dark"><span id="dashTotalContrib">0</span> <small class="fs-6 fw-normal text-muted">฿</small></h4>
+            <!-- ยอดค้างสมทบรวมอยู่ในกล่องนี้ -->
+            <small class="text-danger fw-bold d-block mt-1" style="font-size: 0.75rem;">
+              <i class="fa-solid fa-circle-exclamation"></i> ค้างสมทบ <span id="dashOutstanding">0</span> บาท
+            </small>
+          </div>
         </div>
+        <a href="https://liff.line.me/2010764982-BltKP85l" class="btn-action-sm text-decoration-none"><i class="fa-solid fa-plus"></i> สมทบ</a>
       </div>
-      <a href="https://liff.line.me/2010764982-BltKP85l" class="btn-action-sm text-decoration-none"><i class="fa-solid fa-plus"></i> สมทบ</a>
-    </div>
-    
-    <!-- 🚨 Outstanding Alert -->
-    <div class="text-start ms-2 mb-3">
-      <span class="badge bg-danger bg-opacity-10 text-danger border border-danger px-2 py-1 small">
-        <i class="fa-solid fa-circle-exclamation me-1"></i> ยอดค้างสมทบ <span id="dashOutstanding" class="fw-bold">0</span> บาท
-      </span>
-    </div>
 
-    <!-- 🏥 Stat Card 3: Welfare -->
-    <div class="stat-card text-start mb-4">
-      <div class="d-flex align-items-center gap-3">
-        <div class="icon-box icon-welfare"><i class="fa-solid fa-hand-holding-heart"></i></div>
-        <div>
-          <small class="text-muted fw-bold d-block lh-1 mb-1">รับสวัสดิการรวม</small>
-          <h4 class="fw-bold mb-0 text-dark"><span id="dashTotalWelfare">0</span> <small class="fs-6 fw-normal text-muted">฿</small></h4>
+      <!-- 🏥 Stat Card 3: Welfare -->
+      <div class="stat-card text-start m-0">
+        <div class="d-flex align-items-center gap-3">
+          <div class="icon-box icon-welfare"><i class="fa-solid fa-hand-holding-heart"></i></div>
+          <div>
+            <small class="text-muted fw-bold d-block lh-1 mb-1">รับสวัสดิการรวม</small>
+            <h4 class="fw-bold mb-0 text-dark"><span id="dashTotalWelfare">0</span> <small class="fs-6 fw-normal text-muted">฿</small></h4>
+          </div>
         </div>
+        <a href="https://liff.line.me/2010764982-opxguAid" class="btn-action-sm text-decoration-none"><i class="fa-solid fa-file-medical"></i> ขอเบิก</a>
       </div>
-      <a href="https://liff.line.me/2010764982-opxguAid" class="btn-action-sm text-decoration-none"><i class="fa-solid fa-file-medical"></i> ขอเบิก</a>
+
     </div>
 
     <!-- 🎮 Mission Hub (Clean UI) -->
